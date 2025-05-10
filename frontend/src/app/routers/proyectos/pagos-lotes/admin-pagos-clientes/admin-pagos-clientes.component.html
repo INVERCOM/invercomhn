@@ -1,0 +1,49 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast position="bottom-right"></p-toast>
+            <p-table #dt [value]="data" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="cols" [rows]="10" [paginator]="true" [loading]="isLoadingTable" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedData" selectionMode="multiple" [rowHover]="true" dataKey="unimed_nid">
+                <ng-template pTemplate="caption">
+                    
+                        <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                            <form [formGroup]="createForm">
+                                <span class="block mt-2 md:mt-0 p-input-icon-rigth">
+                                    <p-dropdown [options]="ventasLotes" optionLabel="text" formControlName="venlot_nid" [filter]="true" filterBy="text" [virtualScroll]="ventasLotes.length > 5" [virtualScrollItemSize]="38" (onChange)="getData($event)"></p-dropdown>
+                                </span>
+                            </form>
+                        </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <!-- <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>Acciones</th> -->
+                        <th style="width: 100rem" *ngFor="let col of cols" [pSortableColumn]="col.field"  [class.rowStyle]="col.header !== 'ID'" [class.rowStyleId]="col.header === 'ID'">
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row>
+                    <tr>
+                        <!-- <td>
+                            <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                        </td> -->
+                        <!-- <td>
+                            <div class="flex">
+                                <button *ngIf="row.paglo_nsts > 0" pButton pRipple icon="pi pi-pencil" class="p-button-success mr-1" (click)="editRow(row)"></button>
+                                <button *ngIf="row.paglo_nsts > 0" pButton pRipple icon="pi pi-trash" title="Eliminar" class="p-button-danger" (click)="deleteRow(row)"></button>
+                                <button *ngIf="row.paglo_nsts < 1" pButton pRipple icon="pi pi-replay" title="Restaurar" class="p-button-help" (click)="restartRow(row)"></button>
+                            </div>
+                        </td> -->
+                        <td *ngFor="let col of cols">
+                            <span class="p-column-title">{{ col.header }}</span>
+                            {{row[col['field']]}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

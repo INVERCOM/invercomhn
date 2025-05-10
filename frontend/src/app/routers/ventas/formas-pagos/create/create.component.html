@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="forpag_vcodigo" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(forpag_vcodigo?.invalid && forpag_vcodigo?.touched)" [class.ng-dirty]="(forpag_vcodigo?.invalid && forpag_vcodigo?.touched)" [class.ng-valid]="(forpag_vcodigo?.valid && (forpag_vcodigo?.touched || forpag_vcodigo?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="forpag_vdescripcion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(forpag_vdescripcion?.invalid && forpag_vdescripcion?.touched)" [class.ng-dirty]="(forpag_vdescripcion?.invalid && forpag_vdescripcion?.touched)" [class.ng-valid]="(forpag_vdescripcion?.valid && (forpag_vdescripcion?.touched || forpag_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Cobro adicional (%)</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="forpag_ndprocentajeadicional" type="number" [class.ng-invalid]="(forpag_ndprocentajeadicional?.invalid && forpag_ndprocentajeadicional?.touched)" [class.ng-dirty]="(forpag_ndprocentajeadicional?.invalid && forpag_ndprocentajeadicional?.touched)" [class.ng-valid]="(forpag_ndprocentajeadicional?.valid && (forpag_ndprocentajeadicional?.touched || forpag_ndprocentajeadicional?.dirty))" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="FormaPago && FormaPago.forpag_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

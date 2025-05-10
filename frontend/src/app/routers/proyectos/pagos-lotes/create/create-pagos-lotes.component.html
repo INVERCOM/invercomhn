@@ -1,0 +1,61 @@
+<div class="card">
+    <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Sucursal</label>
+            <div class="col-12 md:col-10">
+                <p-dropdown slot="width: 200px;" [options]="sucursales" optionLabel="text" formControlName="sucu_nid" [filter]="true" filterBy="text" [virtualScroll]="sucursales.length > 5" [virtualScrollItemSize]="38" (onChange)="getVentasLotes(); setSucursal($event.value)"></p-dropdown>
+            </div>
+        </div>
+        <!-- <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Moneda</label>
+            <div class="col-12 md:col-10">
+                <p-dropdown slot="width: 200px;" [options]="monedas" optionLabel="text" formControlName="mone_nid" [filter]="true" filterBy="text" [virtualScroll]="monedas.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+            </div>
+        </div> -->
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Lote del cliente</label>
+            <div class="col-12 md:col-10">
+                <p-dropdown slot="width: 200px;" [options]="ventasLotes" optionLabel="text" formControlName="venlot_nid" [filter]="true" filterBy="text" [virtualScroll]="ventasLotes.length > 5" [virtualScrollItemSize]="38" (onChange)="setImportePago($event.value)"></p-dropdown>
+            </div>
+        </div>
+        <!-- <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Numero documento</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="paglot_vnumerodocumento" type="text" style="text-transform:uppercase;" readonly />
+            </div>
+        </div> -->
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="paglot_dfecha" type="date" required />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Importe del pago</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="paglot_fimporte" type="number" required />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Documento referencia</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="paglot_vdocumentoreferecnia" type="text" style="text-transform:uppercase;" />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Observaciones</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="paglot_vobservaciones" type="text" style="text-transform:uppercase;" />
+            </div>
+        </div>
+        <hr>
+        <div class="field grid">
+            <div class="col-5">
+                <span class="p-buttonset">
+                    <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="pagoLote && pagoLote.paglot_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                    <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                </span>
+            </div>
+        </div>
+    </form>
+</div>

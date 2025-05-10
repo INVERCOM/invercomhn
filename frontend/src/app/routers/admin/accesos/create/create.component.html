@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Modulo</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="modulos" optionLabel="text" formControlName="modu_nid" [filter]="true" filterBy="text" [virtualScroll]="modulos.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(modu_nid?.invalid && modu_nid?.touched)" [class.ng-dirty]="(modu_nid?.invalid && modu_nid?.touched)" [class.ng-valid]="(modu_nid?.valid && (modu_nid?.touched || modu_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="acce_vnombre" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(acce_vnombre?.invalid && acce_vnombre?.touched)" [class.ng-dirty]="(acce_vnombre?.invalid && acce_vnombre?.touched)" [class.ng-valid]="(acce_vnombre?.valid && (acce_vnombre?.touched || acce_vnombre?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="acce_vdescripcion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(acce_vdescripcion?.invalid && acce_vdescripcion?.touched)" [class.ng-dirty]="(acce_vdescripcion?.invalid && acce_vdescripcion?.touched)" [class.ng-valid]="(acce_vdescripcion?.valid && (acce_vdescripcion?.touched || acce_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Clave</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="acce_vclave" type="text" style="text-transform:lowercase;" required [class.ng-invalid]="(acce_vclave?.invalid && acce_vclave?.touched)" [class.ng-dirty]="(acce_vclave?.invalid && acce_vclave?.touched)" [class.ng-valid]="(acce_vclave?.valid && (acce_vclave?.touched || acce_vclave?.dirty))" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="acceso && acceso.acce_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,183 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Punto emisión</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="puntosEmision" optionLabel="text" formControlName="punemi_nid" [filter]="false" filterBy="text" (onChange)="getRegistrosFiscalesByPuntoEmision(); setFactorCambio();" [virtualScroll]="puntosEmision.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(punemi_nid?.invalid && punemi_nid?.touched)" [class.ng-dirty]="(punemi_nid?.invalid && punemi_nid?.touched)" [class.ng-valid]="(punemi_nid?.valid && (punemi_nid?.touched || punemi_nid?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Registro fiscal</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="registrosFiscales" optionLabel="text" formControlName="regfis_nid" [filter]="false" filterBy="text" [virtualScroll]="registrosFiscales.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(regfis_nid?.invalid && regfis_nid?.touched)" [class.ng-dirty]="(regfis_nid?.invalid && regfis_nid?.touched)" [class.ng-valid]="(regfis_nid?.valid && (regfis_nid?.touched || regfis_nid?.dirty))"></p-dropdown>
+                    </div>
+               
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Moneda</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="monedas" optionLabel="text" formControlName="mone_nid" [filter]="false" filterBy="text" (onChange)="setFactorCambio()" [virtualScroll]="monedas.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(mone_nid?.invalid && mone_nid?.touched)" [class.ng-dirty]="(mone_nid?.invalid && mone_nid?.touched)" [class.ng-valid]="(mone_nid?.valid && (mone_nid?.touched || mone_nid?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label *ngIf="mone_nid?.value && mone_nid?.value.id > 0 &&  mone_nid?.value.id !== mone_nidlocal?.value" htmlFor="name3" class="col-12 mb-2 md:col-1 md:mb-0 text-900">Factor cambio</label>
+                    <div *ngIf="mone_nid?.value && mone_nid?.value.id > 0 &&  mone_nid?.value.id !== mone_nidlocal?.value" class="col-12 md:col-3 mb-3">
+                        <input pInputText formControlName="fact_nfactorcambio" type="number"/>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Agente venta</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="agentesVenta" optionLabel="text" formControlName="fact_nvendedor" [filter]="false" filterBy="text" [virtualScroll]="agentesVenta.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(fact_nvendedor?.invalid && fact_nvendedor?.touched)" [class.ng-dirty]="(fact_nvendedor?.invalid && fact_nvendedor?.touched)" [class.ng-valid]="(fact_nvendedor?.valid && (fact_nvendedor?.touched || fact_nvendedor?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Agente cobro</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="agentesCobro" optionLabel="text" formControlName="fact_ncobrador" [filter]="false" filterBy="text" [virtualScroll]="agentesCobro.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(fact_nvendedor?.invalid && fact_nvendedor?.touched)" [class.ng-dirty]="(fact_nvendedor?.invalid && fact_nvendedor?.touched)" [class.ng-valid]="(fact_nvendedor?.valid && (fact_nvendedor?.touched || fact_nvendedor?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Cliente</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="clientes" optionLabel="text" formControlName="cli_nid" [filter]="false" filterBy="text" [virtualScroll]="clientes.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cli_nid?.invalid && cli_nid?.touched)" [class.ng-dirty]="(cli_nid?.invalid && cli_nid?.touched)" [class.ng-valid]="(cli_nid?.valid && (cli_nid?.touched || cli_nid?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Forma pago</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="formasPagos" optionLabel="text" formControlName="forpag_nid" [filter]="false" filterBy="text" [virtualScroll]="clientes.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(forpag_nid?.invalid && forpag_nid?.touched)" [class.ng-dirty]="(forpag_nid?.invalid && forpag_nid?.touched)" [class.ng-valid]="(forpag_nid?.valid && (forpag_nid?.touched || forpag_nid?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-1 md:col-1 md:mb-0 text-900">Tipo factura</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <p-dropdown [options]="tiposFacturas" optionLabel="text" formControlName="fact_ntipo" [filter]="false" filterBy="text" [virtualScroll]="clientes.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(fact_ntipo?.invalid && fact_ntipo?.touched)" [class.ng-dirty]="(fact_ntipo?.invalid && fact_ntipo?.touched)" [class.ng-valid]="(fact_ntipo?.valid && (fact_ntipo?.touched || fact_ntipo?.dirty))"></p-dropdown>
+                    </div>
+
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-1 md:mb-0 text-900">Fecha factura</label>
+                    <div class="col-12 md:col-3 mb-3">
+                        <input pInputText formControlName="fact_dfecha" type="datetime-local" style="text-transform:uppercase;" [class.ng-invalid]="(fact_dfecha?.invalid && fact_dfecha?.touched)" [class.ng-dirty]="(fact_dfecha?.invalid && fact_dfecha?.touched)" [class.ng-valid]="(fact_dfecha?.valid && (fact_dfecha?.touched || fact_dfecha?.dirty))"/>
+                    </div>
+
+                    <label *ngIf="fact_ntipo?.value && fact_ntipo?.value.id > 1" htmlFor="name3" class="col-12 mb-2 md:col-1 md:mb-0 text-900">Vencimiento factura</label>
+                    <div *ngIf="fact_ntipo?.value && fact_ntipo?.value.id > 1" class="col-12 md:col-1 mb-3">
+                        <input pInputText formControlName="fact_dcredito" type="number" style="text-transform:uppercase;" [class.ng-invalid]="(fact_dcredito?.invalid && fact_dcredito?.touched)" [class.ng-dirty]="(fact_dcredito?.invalid && fact_dcredito?.touched)" [class.ng-valid]="(fact_dcredito?.valid && (fact_dcredito?.touched || fact_dcredito?.dirty))"/>
+                    </div>
+                    <div *ngIf="fact_ntipo?.value && fact_ntipo?.value.id > 1" class="col-12 md:col-2 mb-3">
+                        <input pInputText formControlName="fact_dfechavencimiento" type="date" style="text-transform:uppercase;" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-12 md:col-3 mt-1">
+                        <label htmlFor="name3" class="text-900" style="margin: 4px !important;">Material</label>
+                        <p-dropdown [options]="materiales" optionLabel="text" formControlName="mater_nid" [filter]="false" filterBy="text" (onChange)="setMaterial($event.value);" [virtualScroll]="puntosEmision.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(punemi_nid?.invalid && punemi_nid?.touched)" [class.ng-dirty]="(punemi_nid?.invalid && punemi_nid?.touched)" [class.ng-valid]="(punemi_nid?.valid && (punemi_nid?.touched || punemi_nid?.dirty))"></p-dropdown>
+                    </div>
+                    <div class="col-12 md:col-2 mt-1">
+                        <label htmlFor="name3" class="text-900" style="margin: 4px !important;">Precio</label>
+                        <input pInputText formControlName="facdet_fcosto" type="number" [class.ng-invalid]="(facdet_fcantidad?.invalid && facdet_fcantidad?.touched)" (change)="calcularDetalle()" [class.ng-dirty]="(facdet_fcantidad?.invalid && facdet_fcantidad?.touched)" [class.ng-valid]="(facdet_fcantidad?.valid && (facdet_fcantidad?.touched || facdet_fcantidad?.dirty))"/>
+                    </div>
+                    <div class="col-12 md:col-2 mt-1">
+                        <label htmlFor="name3" class="text-900" style="margin: 4px !important;">Cantidad</label>
+                        <input pInputText formControlName="facdet_fcantidad" type="number" [class.ng-invalid]="(facdet_fcantidad?.invalid && facdet_fcantidad?.touched)" (change)="calcularDetalle()" [class.ng-dirty]="(facdet_fcantidad?.invalid && facdet_fcantidad?.touched)" [class.ng-valid]="(facdet_fcantidad?.valid && (facdet_fcantidad?.touched || facdet_fcantidad?.dirty))"/>
+                    </div>
+                    <div class="col-12 md:col-1 mt-1">
+                        <label htmlFor="name3" class="text-900" style="margin: 4px !important;">Descuento(%)</label>
+                        <input pInputText formControlName="facdet_fdescuentosaplicados" type="number" [class.ng-invalid]="(facdet_fdescuentosaplicados?.invalid && facdet_fdescuentosaplicados?.touched)" (change)="calcularDetalle()" [class.ng-dirty]="(facdet_fdescuentosaplicados?.invalid && facdet_fdescuentosaplicados?.touched)" [class.ng-valid]="(facdet_fdescuentosaplicados?.valid && (facdet_fdescuentosaplicados?.touched || facdet_fdescuentosaplicados?.dirty))"/>
+                    </div>
+                    <div class="col-12 md:col-1 mt-1">
+                        <label htmlFor="name3" class="text-900" style="margin: 4px !important;">ISV(%)</label>
+                        <input pInputText formControlName="facdet_fimpuestosaplicados" type="number" [class.ng-invalid]="(facdet_fimpuestosaplicados?.invalid && facdet_fimpuestosaplicados?.touched)" (change)="calcularDetalle()" [class.ng-dirty]="(facdet_fimpuestosaplicados?.invalid && facdet_fimpuestosaplicados?.touched)" [class.ng-valid]="(facdet_fimpuestosaplicados?.valid && (facdet_fimpuestosaplicados?.touched || facdet_fimpuestosaplicados?.dirty))"/>
+                    </div>
+                    <div class="col-12 md:col-2 mt-1">
+                        <label htmlFor="name3" class="text-900" style="margin: 4px !important;">SubTotal</label>
+                        <input pInputText formControlName="facdet_fsubtotal" type="number" [readonly]="true" [class.ng-invalid]="(facdet_fsubtotal?.invalid && facdet_fsubtotal?.touched)" [class.ng-dirty]="(facdet_fsubtotal?.invalid && facdet_fsubtotal?.touched)" [class.ng-valid]="(facdet_fsubtotal?.valid && (facdet_fsubtotal?.touched || facdet_fsubtotal?.dirty))"/>
+                    </div>
+                    <div class="col-12 md:col-1 mt-1 pt-2">
+                        <button [disabled]="false" pButton pRipple icon="pi pi-save" class="p-button-success btn-sm" type="button" (click)="agregarDetalle();"></button>
+                    </div>
+                </div>
+                <hr>
+                <p-table #dt [value]="data" responsiveLayout="scroll" [rows]="10" [rows]="10" [paginator]="false" [showCurrentPageReport]="true" [rowHover]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Acciones</th>
+                            <!-- <th *ngFor="let col of cols" [pSortableColumn]="col.field"  [class.rowStyle]="col.header !== 'ID'" [class.rowStyleId]="col.header === 'ID'">
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th> -->
+                            <th>Material</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Descuento</th>
+                            <th>ISV</th>
+                            <th>Total</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-row>
+                        <tr>
+                            <td>
+                                <div class="flex">
+                                    <button pButton pRipple icon="pi pi-pencil"  title="Editar"  type="button" class="p-button-success mr-1"></button>
+                                    <button pButton pRipple icon="pi pi-trash" title="Eliminar"  type="button" class="p-button-danger"></button>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="p-column-title">Material</span>
+                                {{row['mater_vdescripcion']}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Cant.</span>
+                                {{row['facdet_fcantidad']}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Precio</span>
+                                {{row['facdet_fcosto']}}
+                            </td>
+                            <td>
+                                <span class="p-column-title">Descuento</span>
+                                {{row['facdet_fdescuentosaplicados']}}%
+                            </td>
+                            <td>
+                                <span class="p-column-title">ISV</span>
+                                {{row['facdet_fimpuestosaplicados']}}%
+                            </td>
+                            <td>
+                                <span class="p-column-title">Total</span>
+                                {{row['facdet_nsubtotal']}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <hr>
+                <div class="field grid">
+                    <div class="col-12 md:col-12 mt-1 pr-5">
+                        <table style="float: right;">
+                            <tbody>
+                                <tr>
+                                    <th style="text-align: left;">SubTotal</th>
+                                    <td style="text-align: rigth;">{{subtotal | currency:' ' :'code'}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">Descuentos</th>
+                                    <td style="text-align: rigth;">{{descuento | currency:' ' :'code'}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">ISV</th>
+                                    <td style="text-align: rigth;">{{isv | currency:' ' :'code'}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">Total</th>
+                                    <td style="text-align: rigth;">{{total | currency:' ' :'code'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="factura && factura.cli_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

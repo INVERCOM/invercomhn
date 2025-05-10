@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" filterBy="text" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Empleado</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="empleados" optionLabel="text" formControlName="emp_nid" [filter]="false" filterBy="text" [virtualScroll]="empleados.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(emp_nid?.invalid && emp_nid?.touched)" [class.ng-dirty]="(emp_nid?.invalid && emp_nid?.touched)" [class.ng-valid]="(emp_nid?.valid && (emp_nid?.touched || emp_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha entrada</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="asis_ttfechaentrada" type="datetime-local" [class.ng-invalid]="(asis_ttfechaentrada?.invalid && asis_ttfechaentrada?.touched)" [class.ng-dirty]="(asis_ttfechaentrada?.invalid && asis_ttfechaentrada?.touched)" [class.ng-valid]="(asis_ttfechaentrada?.valid && (asis_ttfechaentrada?.touched || asis_ttfechaentrada?.dirty))" />
+                    </div>
+                </div>
+                <!-- <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Ubicación entrada</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="asis_nlatentrada" type="text" [class.ng-invalid]="(asis_nlatentrada?.invalid && asis_nlatentrada?.touched)" [class.ng-dirty]="(asis_nlatentrada?.invalid && asis_nlatentrada?.touched)" [class.ng-valid]="(asis_nlatentrada?.valid && (asis_nlatentrada?.touched || asis_nlatentrada?.dirty))" />
+                    </div>
+                </div> -->
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha salida</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="asis_ttfechasalida" type="datetime-local" [class.ng-invalid]="(asis_ttfechasalida?.invalid && asis_ttfechasalida?.touched)" [class.ng-dirty]="(asis_ttfechasalida?.invalid && asis_ttfechasalida?.touched)" [class.ng-valid]="(asis_ttfechasalida?.valid && (asis_ttfechasalida?.touched || asis_ttfechasalida?.dirty))" />
+                    </div>
+                </div>
+                <!-- <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Ubicación salida</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="asis_nlatsalida" type="text" [class.ng-invalid]="(asis_nlatsalida?.invalid && asis_nlatsalida?.touched)" [class.ng-dirty]="(asis_nlatsalida?.invalid && asis_nlatsalida?.touched)" [class.ng-valid]="(asis_nlatsalida?.valid && (asis_nlatsalida?.touched || asis_nlatsalida?.dirty))" />
+                    </div>
+                </div> -->
+
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Tiempo receso (min)</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="asis_nminutosreceso" type="number" [class.ng-invalid]="(asis_nminutosreceso?.invalid && asis_nminutosreceso?.touched)" [class.ng-dirty]="(asis_nminutosreceso?.invalid && asis_nminutosreceso?.touched)" [class.ng-valid]="(asis_nminutosreceso?.valid && (asis_nminutosreceso?.touched || asis_nminutosreceso?.dirty))"/>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!validarForm()" [loading]="guardando" pButton pRipple [label]="asistencia && asistencia.asis_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

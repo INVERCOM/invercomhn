@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Lote</label>
+                    <div class="col-12 md:col-4">
+                        <p-dropdown [options]="lotes" optionLabel="text" formControlName="lote_nid" (onChange)="setPrecio($event)" [filter]="true" filterBy="text" [virtualScroll]="lotes.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(lote_nid?.invalid && lote_nid?.touched)" [class.ng-dirty]="(lote_nid?.invalid && lote_nid?.touched)" [class.ng-valid]="(lote_nid?.valid && (lote_nid?.touched || lote_nid?.dirty))"></p-dropdown>
+                    </div>
+               
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Cliente</label>
+                    <div class="col-12 md:col-4">
+                        <p-dropdown [options]="clientes" optionLabel="text" formControlName="cli_nid" [filter]="true" filterBy="text" [virtualScroll]="clientes.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cli_nid?.invalid && cli_nid?.touched)" [class.ng-dirty]="(cli_nid?.invalid && cli_nid?.touched)" [class.ng-valid]="(cli_nid?.valid && (cli_nid?.touched || cli_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha venta</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_dfecha" type="date" required [class.ng-invalid]="(venlot_dfecha?.invalid && venlot_dfecha?.touched)" [class.ng-dirty]="(venlot_dfecha?.invalid && venlot_dfecha?.touched)" [class.ng-valid]="(venlot_dfecha?.valid && (venlot_dfecha?.touched || venlot_dfecha?.dirty))" />
+                    </div>
+               
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Precio total</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_fprecio" type="number" (change)="setValorFinal()" required [class.ng-invalid]="(venlot_fprecio?.invalid && venlot_fprecio?.touched)" [class.ng-dirty]="(venlot_fprecio?.invalid && venlot_fprecio?.touched)" [class.ng-valid]="(venlot_fprecio?.valid && (venlot_fprecio?.touched || venlot_fprecio?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Prima</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_fprima" type="number" (change)="setValorFinal()" required [class.ng-invalid]="(venlot_fprima?.invalid && venlot_fprima?.touched)" [class.ng-dirty]="(venlot_fprima?.invalid && venlot_fprima?.touched)" [class.ng-valid]="(venlot_fprima?.valid && (venlot_fprima?.touched || venlot_fprima?.dirty))" />
+                    </div>
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Valor final</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_fvalorfinal" type="number" required [readonly]="true" [class.ng-invalid]="(venlot_fvalorfinal?.invalid && venlot_fvalorfinal?.touched)" [class.ng-dirty]="(venlot_fvalorfinal?.invalid && venlot_fvalorfinal?.touched)" [class.ng-valid]="(venlot_fvalorfinal?.valid && (venlot_fvalorfinal?.touched || venlot_fvalorfinal?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Tasa interes anual</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_ftasainteresanual" (change)="setCuotraMensual()" type="number" required [class.ng-invalid]="(venlot_ftasainteresanual?.invalid && venlot_ftasainteresanual?.touched)" [class.ng-dirty]="(venlot_ftasainteresanual?.invalid && venlot_ftasainteresanual?.touched)" [class.ng-valid]="(venlot_ftasainteresanual?.valid && (venlot_ftasainteresanual?.touched || venlot_ftasainteresanual?.dirty))" />
+                    </div>
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Numero de meses</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_nnumeromeses" type="number" (change)="setCuotraMensual()" required [class.ng-invalid]="(venlot_nnumeromeses?.invalid && venlot_nnumeromeses?.touched)" [class.ng-dirty]="(venlot_nnumeromeses?.invalid && venlot_nnumeromeses?.touched)" [class.ng-valid]="(venlot_nnumeromeses?.valid && (venlot_nnumeromeses?.touched || venlot_nnumeromeses?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Dia de pago</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_ndiapago" type="number" required [class.ng-invalid]="(venlot_ndiapago?.invalid && venlot_ndiapago?.touched)" [class.ng-dirty]="(venlot_ndiapago?.invalid && venlot_ndiapago?.touched)" [class.ng-valid]="(venlot_ndiapago?.valid && (venlot_ndiapago?.touched || venlot_ndiapago?.dirty))" />
+                    </div>
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Dia máximo de pago</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_ndiamaxpago" type="number" required [class.ng-invalid]="(venlot_ndiamaxpago?.invalid && venlot_ndiamaxpago?.touched)" [class.ng-dirty]="(venlot_ndiamaxpago?.invalid && venlot_ndiamaxpago?.touched)" [class.ng-valid]="(venlot_ndiamaxpago?.valid && (venlot_ndiamaxpago?.touched || venlot_ndiamaxpago?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Cuaota mensual</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_fcuotanivelada" type="number" [readonly]="true" required [class.ng-invalid]="(venlot_fcuotanivelada?.invalid && venlot_fcuotanivelada?.touched)" [class.ng-dirty]="(venlot_fcuotanivelada?.invalid && venlot_fcuotanivelada?.touched)" [class.ng-valid]="(venlot_fcuotanivelada?.valid && (venlot_fcuotanivelada?.touched || venlot_fcuotanivelada?.dirty))" />
+                    </div>
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Observaciones</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_vobservaciones" type="text" [class.ng-invalid]="(venlot_vobservaciones?.invalid && venlot_vobservaciones?.touched)" [class.ng-dirty]="(venlot_vobservaciones?.invalid && venlot_vobservaciones?.touched)" [class.ng-valid]="(venlot_vobservaciones?.valid && (venlot_vobservaciones?.touched || venlot_vobservaciones?.dirty))" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="ventaLote && ventaLote.venlot_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

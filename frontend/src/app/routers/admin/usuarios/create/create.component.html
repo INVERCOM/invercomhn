@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card pt-3 pb-3">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Correo electrónico</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="user_vmail" type="text" style="text-transform:lowercase;" required [class.ng-invalid]="(user_vmail?.invalid && user_vmail?.touched)" [class.ng-dirty]="(user_vmail?.invalid && user_vmail?.touched)" [class.ng-valid]="(user_vmail?.valid && (user_vmail?.touched || user_vmail?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Teléfono</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="user_vtelefono" type="number" required [class.ng-invalid]="(user_vtelefono?.invalid && user_vtelefono?.touched)" [class.ng-dirty]="(user_vtelefono?.invalid && user_vtelefono?.touched)" [class.ng-valid]="(user_vtelefono?.valid && (user_vtelefono?.touched || user_vtelefono?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Empleado</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="empleados" optionLabel="text" formControlName="emp_nid" [filter]="true" filterBy="text" [virtualScroll]="empleados.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(emp_nid?.invalid && emp_nid?.touched)" [class.ng-dirty]="(emp_nid?.invalid && emp_nid?.touched)" [class.ng-valid]="(emp_nid?.valid && (emp_nid?.touched || emp_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Tiempo de sesión</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="tiempos" optionLabel="text" formControlName="user_vtiemposesion" [filter]="false" filterBy="text" [virtualScroll]="tiempos.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(user_vtiemposesion?.invalid && user_vtiemposesion?.touched)" [class.ng-dirty]="(user_vtiemposesion?.invalid && user_vtiemposesion?.touched)" [class.ng-valid]="(user_vtiemposesion?.valid && (user_vtiemposesion?.touched || user_vtiemposesion?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="usuario && usuario.user_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

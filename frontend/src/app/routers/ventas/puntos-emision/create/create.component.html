@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Sucursal</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="sucursales" optionLabel="text" formControlName="sucu_nid" [filter]="false" filterBy="text" [virtualScroll]="sucursales.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(sucu_nid?.invalid && sucu_nid?.touched)" [class.ng-dirty]="(sucu_nid?.invalid && sucu_nid?.touched)" [class.ng-valid]="(sucu_nid?.valid && (sucu_nid?.touched || sucu_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="punemi_vcodigo" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(punemi_vcodigo?.invalid && punemi_vcodigo?.touched)" [class.ng-dirty]="(punemi_vcodigo?.invalid && punemi_vcodigo?.touched)" [class.ng-valid]="(punemi_vcodigo?.valid && (punemi_vcodigo?.touched || punemi_vcodigo?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="punemi_vdescripcion" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(punemi_vdescripcion?.invalid && punemi_vdescripcion?.touched)" [class.ng-dirty]="(punemi_vdescripcion?.invalid && punemi_vdescripcion?.touched)" [class.ng-valid]="(punemi_vdescripcion?.valid && (punemi_vdescripcion?.touched || punemi_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Dirección</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="punemi_vdireccion" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(punemi_vdireccion?.invalid && punemi_vdireccion?.touched)" [class.ng-dirty]="(punemi_vdireccion?.invalid && punemi_vdireccion?.touched)" [class.ng-valid]="(punemi_vdireccion?.valid && (punemi_vdireccion?.touched || punemi_vdireccion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Teléfono</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="punemi_vtelefono" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(punemi_vtelefono?.invalid && punemi_vtelefono?.touched)" [class.ng-dirty]="(punemi_vtelefono?.invalid && punemi_vtelefono?.touched)" [class.ng-valid]="(punemi_vtelefono?.valid && (punemi_vtelefono?.touched || punemi_vtelefono?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Configuración inventario</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="configuracionInv" optionLabel="text" formControlName="punemi_nconfinventario" [filter]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(punemi_nconfinventario?.invalid && punemi_nconfinventario?.touched)" [class.ng-dirty]="(punemi_nconfinventario?.invalid && punemi_nconfinventario?.touched)" [class.ng-valid]="(punemi_nconfinventario?.valid && (punemi_nconfinventario?.touched || punemi_nconfinventario?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Validación directa</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="punemi_nvalidarfactura" [filter]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(punemi_nvalidarfactura?.invalid && punemi_nvalidarfactura?.touched)" [class.ng-dirty]="(punemi_nvalidarfactura?.invalid && punemi_nvalidarfactura?.touched)" [class.ng-valid]="(punemi_nvalidarfactura?.valid && (punemi_nvalidarfactura?.touched || punemi_nvalidarfactura?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!validarForm()" [loading]="guardando" pButton pRipple [label]="puntoEmision && puntoEmision.punemi_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

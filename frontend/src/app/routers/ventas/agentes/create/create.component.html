@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="agen_vcodigo" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(agen_vcodigo?.invalid && agen_vcodigo?.touched)" [class.ng-dirty]="(agen_vcodigo?.invalid && agen_vcodigo?.touched)" [class.ng-valid]="(agen_vcodigo?.valid && (agen_vcodigo?.touched || agen_vcodigo?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="agen_vnombre" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(agen_vnombre?.invalid && agen_vnombre?.touched)" [class.ng-dirty]="(agen_vnombre?.invalid && agen_vnombre?.touched)" [class.ng-valid]="(agen_vnombre?.valid && (agen_vnombre?.touched || agen_vnombre?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Tipo</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="tiposAgentes" optionLabel="text" formControlName="agen_ntipo" [filter]="false" [virtualScroll]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(agen_ntipo?.invalid && agen_ntipo?.touched)" [class.ng-dirty]="(agen_ntipo?.invalid && agen_ntipo?.touched)" [class.ng-valid]="(agen_ntipo?.valid && (agen_ntipo?.touched || agen_ntipo?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="agente && agente.agen_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="docfis_vcodigo" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(docfis_vcodigo?.invalid && docfis_vcodigo?.touched)" [class.ng-dirty]="(docfis_vcodigo?.invalid && docfis_vcodigo?.touched)" [class.ng-valid]="(docfis_vcodigo?.valid && (docfis_vcodigo?.touched || docfis_vcodigo?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="docfis_vdescripcion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(docfis_vdescripcion?.invalid && docfis_vdescripcion?.touched)" [class.ng-dirty]="(docfis_vdescripcion?.invalid && docfis_vdescripcion?.touched)" [class.ng-valid]="(docfis_vdescripcion?.valid && (docfis_vdescripcion?.touched || docfis_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Generar movimientos inventarios</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="docfis_nrebajarinventarios" [filter]="false" [virtualScroll]="SiNo.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(docfis_nrebajarinventarios?.invalid && docfis_nrebajarinventarios?.touched)" [class.ng-dirty]="(docfis_nrebajarinventarios?.invalid && docfis_nrebajarinventarios?.touched)" [class.ng-valid]="(docfis_nrebajarinventarios?.valid && (docfis_nrebajarinventarios?.touched || docfis_nrebajarinventarios?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Generar movimientos cuentas por cobrar</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="docfis_ngenerarcxc" [filter]="false" [virtualScroll]="SiNo.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(docfis_ngenerarcxc?.invalid && docfis_ngenerarcxc?.touched)" [class.ng-dirty]="(docfis_ngenerarcxc?.invalid && docfis_ngenerarcxc?.touched)" [class.ng-valid]="(docfis_ngenerarcxc?.valid && (docfis_ngenerarcxc?.touched || docfis_ngenerarcxc?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <!-- <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Valor</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="unimed_ntipo" type="number" required [class.ng-invalid]="(unimed_ntipo?.invalid && unimed_ntipo?.touched)" [class.ng-dirty]="(unimed_ntipo?.invalid && unimed_ntipo?.touched)" [class.ng-valid]="(unimed_ntipo?.valid && (unimed_ntipo?.touched || unimed_ntipo?.dirty))" />
+                    </div>
+                </div> -->
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="DocumentoFiscal && DocumentoFiscal.docfis_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

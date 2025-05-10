@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="isv_vdescripcion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(isv_vdescripcion?.invalid && isv_vdescripcion?.touched)" [class.ng-dirty]="(isv_vdescripcion?.invalid && isv_vdescripcion?.touched)" [class.ng-valid]="(isv_vdescripcion?.valid && (isv_vdescripcion?.touched || isv_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Valor</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="isv_nvalor" type="number" required [class.ng-invalid]="(isv_nvalor?.invalid && isv_nvalor?.touched)" [class.ng-dirty]="(isv_nvalor?.invalid && isv_nvalor?.touched)" [class.ng-valid]="(isv_nvalor?.valid && (isv_nvalor?.touched || isv_nvalor?.dirty))" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="impuesto && impuesto.isv_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

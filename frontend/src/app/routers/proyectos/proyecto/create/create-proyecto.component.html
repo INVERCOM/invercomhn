@@ -1,0 +1,47 @@
+<div class="card">
+    <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Sucursal</label>
+            <div class="col-12 md:col-10">
+                <p-dropdown slot="width: 200px;" [options]="sucursales" optionLabel="text" formControlName="sucu_nid" [filter]="true" filterBy="text" [virtualScroll]="sucursales.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="proy_vnombre" type="text" style="text-transform:uppercase;" required />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripcion</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="proy_vdescripcion" type="text" style="text-transform:uppercase;" required />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="map-container" style="height: 300px;">
+                <div class="map-wrapper" style="height: 100%;">
+                    <google-map 
+                        height="100%"
+                        width="100%"
+                        [zoom]="15"
+                        [center]="center"
+                        [options]="options"
+                        (mapClick)="onMapClick($event)">
+                    </google-map>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="field grid">
+            <div class="col-5">
+                <span class="p-buttonset">
+                    <button *ngIf="geocercaCoordinates.length > 0"  pButton pRipple label="Finalizar Geocerca" icon="pi pi-pencil" class="p-button-warning mr-1 btn-sm" type="button" (click)="finishDrawing()"></button>
+                    <button *ngIf="geocercaCoordinates.length > 0"  pButton pRipple icon="pi pi-times" class="p-button-info mr-1 btn-sm" type="button" (click)="clearPolygon()"></button>
+                    <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="proyecto && proyecto.sucu_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                    <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                </span>
+            </div>
+        </div>
+    </form>
+</div>

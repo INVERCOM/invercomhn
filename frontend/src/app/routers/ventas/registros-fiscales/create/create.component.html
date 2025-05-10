@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Punto emisión</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="puntosEmision" optionLabel="text" formControlName="punemi_nid" [filter]="false" [virtualScroll]="puntosEmision.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(punemi_nid?.invalid && punemi_nid?.touched)" [class.ng-dirty]="(punemi_nid?.invalid && punemi_nid?.touched)" [class.ng-valid]="(punemi_nid?.valid && (punemi_nid?.touched || punemi_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Documento fiscal</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="DocumentosFiscales" optionLabel="text" formControlName="docfis_nid" [filter]="false" [virtualScroll]="DocumentosFiscales.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(docfis_nid?.invalid && docfis_nid?.touched)" [class.ng-dirty]="(docfis_nid?.invalid && docfis_nid?.touched)" [class.ng-valid]="(docfis_nid?.valid && (docfis_nid?.touched || docfis_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">CAI</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="regfis_vcai" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(regfis_vcai?.invalid && regfis_vcai?.touched)" [class.ng-dirty]="(regfis_vcai?.invalid && regfis_vcai?.touched)" [class.ng-valid]="(regfis_vcai?.valid && (regfis_vcai?.touched || regfis_vcai?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Numero autorización</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="regfis_vnumeroautorizacion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(regfis_vnumeroautorizacion?.invalid && regfis_vnumeroautorizacion?.touched)" [class.ng-dirty]="(regfis_vnumeroautorizacion?.invalid && regfis_vnumeroautorizacion?.touched)" [class.ng-valid]="(regfis_vnumeroautorizacion?.valid && (regfis_vnumeroautorizacion?.touched || regfis_vnumeroautorizacion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Rango inicial</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="regfis_ninicio" type="number" required [class.ng-invalid]="(regfis_ninicio?.invalid && regfis_ninicio?.touched)" [class.ng-dirty]="(regfis_ninicio?.invalid && regfis_ninicio?.touched)" [class.ng-valid]="(regfis_ninicio?.valid && (regfis_ninicio?.touched || regfis_ninicio?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Rango final</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="regfis_nfin" type="number" required [class.ng-invalid]="(regfis_nfin?.invalid && regfis_nfin?.touched)" [class.ng-dirty]="(regfis_nfin?.invalid && regfis_nfin?.touched)" [class.ng-valid]="(regfis_nfin?.valid && (regfis_nfin?.touched || regfis_nfin?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha máxmia emisión</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="regfis_dfechamaxemision" type="date" required [class.ng-invalid]="(regfis_dfechamaxemision?.invalid && regfis_dfechamaxemision?.touched)" [class.ng-dirty]="(regfis_dfechamaxemision?.invalid && regfis_dfechamaxemision?.touched)" [class.ng-valid]="(regfis_dfechamaxemision?.valid && (regfis_dfechamaxemision?.touched || regfis_dfechamaxemision?.dirty))" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="RegistroFiscal && RegistroFiscal.regfis_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

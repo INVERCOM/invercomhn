@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="coninv_vdescripcion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(coninv_vdescripcion?.invalid && coninv_vdescripcion?.touched)" [class.ng-dirty]="(coninv_vdescripcion?.invalid && coninv_vdescripcion?.touched)" [class.ng-valid]="(coninv_vdescripcion?.valid && (coninv_vdescripcion?.touched || coninv_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Observaciones</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="coninv_vobservaciones" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(coninv_vobservaciones?.invalid && coninv_vobservaciones?.touched)" [class.ng-dirty]="(coninv_vobservaciones?.invalid && coninv_vobservaciones?.touched)" [class.ng-valid]="(coninv_vobservaciones?.valid && (coninv_vobservaciones?.touched || coninv_vobservaciones?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Tipo</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="tiposConceptoInv" optionLabel="text" formControlName="coninv_ntipo" [filter]="false" [virtualScroll]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(coninv_ntipo?.invalid && coninv_ntipo?.touched)" [class.ng-dirty]="(coninv_ntipo?.invalid && coninv_ntipo?.touched)" [class.ng-valid]="(coninv_ntipo?.valid && (coninv_ntipo?.touched || coninv_ntipo?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Bodega por defecto</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="bodegaConfiguracion" optionLabel="text" formControlName="coninv_nbodegaconfigurada" [filter]="false" [virtualScroll]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(coninv_nbodegaconfigurada?.invalid && coninv_nbodegaconfigurada?.touched)" [class.ng-dirty]="(coninv_nbodegaconfigurada?.invalid && coninv_nbodegaconfigurada?.touched)" [class.ng-valid]="(coninv_nbodegaconfigurada?.valid && (coninv_nbodegaconfigurada?.touched || coninv_nbodegaconfigurada?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">ISV en costo</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="coninv_nisvencosteo" [filter]="false" [virtualScroll]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(coninv_nisvencosteo?.invalid && coninv_nisvencosteo?.touched)" [class.ng-dirty]="(coninv_nisvencosteo?.invalid && coninv_nisvencosteo?.touched)" [class.ng-valid]="(coninv_nisvencosteo?.valid && (coninv_nisvencosteo?.touched || coninv_nisvencosteo?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Para devoluciones</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="coninv_ndevolucion" [filter]="false" [virtualScroll]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(coninv_ndevolucion?.invalid && coninv_ndevolucion?.touched)" [class.ng-dirty]="(coninv_ndevolucion?.invalid && coninv_ndevolucion?.touched)" [class.ng-valid]="(coninv_ndevolucion?.valid && (coninv_ndevolucion?.touched || coninv_ndevolucion?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="conceptoInventario && conceptoInventario.coninv_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" filterBy="text" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre completo</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cli_vnombre" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(cli_vnombre?.invalid && cli_vnombre?.touched)" [class.ng-dirty]="(cli_vnombre?.invalid && cli_vnombre?.touched)" [class.ng-valid]="(cli_vnombre?.valid && (cli_vnombre?.touched || cli_vnombre?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Identidad</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cli_videntidad" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(cli_videntidad?.invalid && cli_videntidad?.touched)" [class.ng-dirty]="(cli_videntidad?.invalid && cli_videntidad?.touched)" [class.ng-valid]="(cli_videntidad?.valid && (cli_videntidad?.touched || cli_videntidad?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">RTN</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cli_vrtn" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(cli_vrtn?.invalid && cli_vrtn?.touched)" [class.ng-dirty]="(cli_vrtn?.invalid && cli_vrtn?.touched)" [class.ng-valid]="(cli_vrtn?.valid && (cli_vrtn?.touched || cli_vrtn?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Dirección</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cli_vdireccion" type="text" style="text-transform:uppercase;"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Teléfono</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cli_vtelefono" type="text" style="text-transform:uppercase;"/>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="cliente && cliente.cli_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.map-container {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+}
+  
+.map-wrapper {
+    flex: 1;
+    height: 500px;
+}
+
+/* Intenta seleccionar específicamente el botón de cierre */
+.gm-style .gm-ui-hover-effect {
+    display: none !important;
+  }
+  

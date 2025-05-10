@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cia_vnombre" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(cia_vnombre?.invalid && cia_vnombre?.touched)" [class.ng-dirty]="(cia_vnombre?.invalid && cia_vnombre?.touched)" [class.ng-valid]="(cia_vnombre?.valid && (cia_vnombre?.touched || cia_vnombre?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre comercial</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cia_vnombrecomercial" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(cia_vnombrecomercial?.invalid && cia_vnombrecomercial?.touched)" [class.ng-dirty]="(cia_vnombrecomercial?.invalid && cia_vnombrecomercial?.touched)" [class.ng-valid]="(cia_vnombrecomercial?.valid && (cia_vnombrecomercial?.touched || cia_vnombrecomercial?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Moneda</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="monedas" optionLabel="text" formControlName="mone_nid" [filter]="true" filterBy="text" [virtualScroll]="monedas.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(mone_nid?.invalid && mone_nid?.touched)" [class.ng-dirty]="(mone_nid?.invalid && mone_nid?.touched)" [class.ng-valid]="(mone_nid?.valid && (mone_nid?.touched || mone_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Dirección</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cia_vdireccion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(cia_vdireccion?.invalid && cia_vdireccion?.touched)" [class.ng-dirty]="(cia_vdireccion?.invalid && cia_vdireccion?.touched)" [class.ng-valid]="(cia_vdireccion?.valid && (cia_vdireccion?.touched || cia_vdireccion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Teléfono</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cia_vtelefono" type="number" required [class.ng-invalid]="(cia_vtelefono?.invalid && cia_vtelefono?.touched)" [class.ng-dirty]="(cia_vtelefono?.invalid && cia_vtelefono?.touched)" [class.ng-valid]="(cia_vtelefono?.valid && (cia_vtelefono?.touched || cia_vtelefono?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">RTN</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cia_vrtn" type="number" required [class.ng-invalid]="(cia_vrtn?.invalid && cia_vrtn?.touched)" [class.ng-dirty]="(cia_vrtn?.invalid && cia_vrtn?.touched)" [class.ng-valid]="(cia_vrtn?.valid && (cia_vrtn?.touched || cia_vrtn?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Correo</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="cia_vcorreo" type="text" style="text-transform:lowercase;" [class.ng-invalid]="(cia_vcorreo?.invalid && cia_vcorreo?.touched)" [class.ng-dirty]="(cia_vcorreo?.invalid && cia_vcorreo?.touched)" [class.ng-valid]="(cia_vcorreo?.valid && (cia_vcorreo?.touched || cia_vcorreo?.dirty))" />
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="compania && compania.cia_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

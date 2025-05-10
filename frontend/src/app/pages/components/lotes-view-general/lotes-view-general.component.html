@@ -1,0 +1,21 @@
+<div class="w-screen h-screen">
+    <div class="w-full h-full">
+        <div class="col-12">
+            <div class="map-container" style="height: 96vh;">
+                <div class="map-wrapper" style="height: 100%;">
+                    <google-map #googleMap
+                        height="100%"
+                        width="100%"
+                        [zoom]="17"
+                        [center]="center"
+                        [options]="options">
+                        <map-info-window [options]="{ position: infoWindowPosition }">
+                            <p style="color: black;" [innerHTML]="infoContent"></p>
+                          
+                        </map-info-window>
+                    </google-map>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

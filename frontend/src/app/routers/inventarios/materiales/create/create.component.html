@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="mater_vcodigo" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(mater_vcodigo?.invalid && mater_vcodigo?.touched)" [class.ng-dirty]="(mater_vcodigo?.invalid && mater_vcodigo?.touched)" [class.ng-valid]="(mater_vcodigo?.valid && (mater_vcodigo?.touched || mater_vcodigo?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="mater_vnombre" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(mater_vnombre?.invalid && mater_vnombre?.touched)" [class.ng-dirty]="(mater_vnombre?.invalid && mater_vnombre?.touched)" [class.ng-valid]="(mater_vnombre?.valid && (mater_vnombre?.touched || mater_vnombre?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Descripción</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="mater_vdescripcion" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(mater_vdescripcion?.invalid && mater_vdescripcion?.touched)" [class.ng-dirty]="(mater_vdescripcion?.invalid && mater_vdescripcion?.touched)" [class.ng-valid]="(mater_vdescripcion?.valid && (mater_vdescripcion?.touched || mater_vdescripcion?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código de barras</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="mater_vcodbar" type="text" style="text-transform:uppercase;" [class.ng-invalid]="(mater_vcodbar?.invalid && mater_vcodbar?.touched)" [class.ng-dirty]="(mater_vcodbar?.invalid && mater_vcodbar?.touched)" [class.ng-valid]="(mater_vcodbar?.valid && (mater_vcodbar?.touched || mater_vcodbar?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Manejo inventario</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="manejosInv" optionLabel="text" formControlName="mater_ntipomanejo" [filter]="false" filterBy="text" [virtualScrollItemSize]="38" [class.ng-invalid]="(mater_ntipomanejo?.invalid && mater_ntipomanejo?.touched)" [class.ng-dirty]="(mater_ntipomanejo?.invalid && mater_ntipomanejo?.touched)" [class.ng-valid]="(mater_ntipomanejo?.valid && (mater_ntipomanejo?.touched || mater_ntipomanejo?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Precio</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="mater_nprecio" type="number" required [class.ng-invalid]="(mater_nprecio?.invalid && mater_nprecio?.touched)" [class.ng-dirty]="(mater_nprecio?.invalid && mater_nprecio?.touched)" [class.ng-valid]="(mater_nprecio?.valid && (mater_nprecio?.touched || mater_nprecio?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Costo</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="mater_ncosto" type="number" required [class.ng-invalid]="(mater_ncosto?.invalid && mater_ncosto?.touched)" [class.ng-dirty]="(mater_ncosto?.invalid && mater_ncosto?.touched)" [class.ng-valid]="(mater_ncosto?.valid && (mater_ncosto?.touched || mater_ncosto?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Impuestos</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="impuestos" optionLabel="text" formControlName="mater_vimpuestos" [filter]="false" [virtualScroll]="impuestos.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(mater_vimpuestos?.invalid && mater_vimpuestos?.touched)" [class.ng-dirty]="(mater_vimpuestos?.invalid && mater_vimpuestos?.touched)" [class.ng-valid]="(mater_vimpuestos?.valid && (mater_vimpuestos?.touched || mater_vimpuestos?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">ISV incluido</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="mater_nisvincluido" [filter]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(mater_nisvincluido?.invalid && mater_nisvincluido?.touched)" [class.ng-dirty]="(mater_nisvincluido?.invalid && mater_nisvincluido?.touched)" [class.ng-valid]="(mater_nisvincluido?.valid && (mater_nisvincluido?.touched || mater_nisvincluido?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Mostrar para facturar</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="SiNo" optionLabel="text" formControlName="mater_nmostrarfact" [filter]="false" [virtualScrollItemSize]="38" [class.ng-invalid]="(mater_nmostrarfact?.invalid && mater_nmostrarfact?.touched)" [class.ng-dirty]="(mater_nmostrarfact?.invalid && mater_nmostrarfact?.touched)" [class.ng-valid]="(mater_nmostrarfact?.valid && (mater_nmostrarfact?.touched || mater_nmostrarfact?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!validarForm()" [loading]="guardando" pButton pRipple [label]="material && material.mater_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

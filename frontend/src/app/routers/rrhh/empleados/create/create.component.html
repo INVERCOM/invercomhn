@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Compañía</label>
+                    <div class="col-12 md:col-10">
+                        <p-dropdown [options]="companias" optionLabel="text" formControlName="cia_nid" [filter]="false" filterBy="text" [virtualScroll]="companias.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-dirty]="(cia_nid?.invalid && cia_nid?.touched)" [class.ng-valid]="(cia_nid?.valid && (cia_nid?.touched || cia_nid?.dirty))"></p-dropdown>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Nombre</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_vnombre" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(emp_vnombre?.invalid && emp_vnombre?.touched)" [class.ng-dirty]="(emp_vnombre?.invalid && emp_vnombre?.touched)" [class.ng-valid]="(emp_vnombre?.valid && (emp_vnombre?.touched || emp_vnombre?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Apellido</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_vapellido" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(emp_vapellido?.invalid && emp_vapellido?.touched)" [class.ng-dirty]="(emp_vapellido?.invalid && emp_vapellido?.touched)" [class.ng-valid]="(emp_vapellido?.valid && (emp_vapellido?.touched || emp_vapellido?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Identidad</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_videntidad" type="text" style="text-transform:uppercase;" required [class.ng-invalid]="(emp_videntidad?.invalid && emp_videntidad?.touched)" [class.ng-dirty]="(emp_videntidad?.invalid && emp_videntidad?.touched)" [class.ng-valid]="(emp_videntidad?.valid && (emp_videntidad?.touched || emp_videntidad?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Código</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_vcodigo" type="text" style="text-transform:uppercase;"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Dirección</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_vdireccion" type="text" style="text-transform:uppercase;"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Teléfono</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_vtelefono" type="number" style="text-transform:uppercase;"/>
+                    </div>
+                </div>
+
+                <div class="field grid">
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha ingreso</label>
+                    <div class="col-12 md:col-10">
+                        <input pInputText formControlName="emp_vfechaingreso" type="date" style="text-transform:uppercase;"/>
+                    </div>
+                </div>
+                <hr>
+                <div class="field grid">
+                    <div class="col-5">
+                        <span class="p-buttonset">
+                            <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="empleado && empleado.emp_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

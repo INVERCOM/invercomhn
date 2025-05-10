@@ -1,0 +1,79 @@
+<div class="card">
+    <form [formGroup]="createForm" class="form-horizontal" (ngSubmit)="save()">
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Proyecto</label>
+            <div class="col-12 md:col-10">
+                <p-dropdown slot="width: 200px;" [options]="proyectos" optionLabel="text" formControlName="proy_nid" [filter]="true" filterBy="text" [virtualScroll]="proyectos.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Unidad</label>
+            <div class="col-12 md:col-10">
+                <p-dropdown slot="width: 200px;" [options]="unimeds" optionLabel="text" formControlName="unimed_nid" [filter]="true" filterBy="text" [virtualScroll]="unimeds.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Lote</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="lote_vnombre" type="text" style="text-transform:uppercase;" required />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Codigo</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="lote_vcodigo" type="text" style="text-transform:uppercase;" required />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Medida total</label>
+            <div class="col-12 md:col-2">
+                <input pInputText formControlName="lote_fmedida" type="number" min="1" max="100000000" style="text-transform:uppercase;" required  (input)="calculaPrecio()"/>
+            </div>
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Largo</label>
+            <div class="col-12 md:col-2">
+                <input pInputText formControlName="lote_flargo" type="number" min="1" max="10000" style="text-transform:uppercase;" required/>
+            </div>
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Ancho</label>
+            <div class="col-12 md:col-2">
+                <input pInputText formControlName="lote_fancho" type="number" min="1" max="10000" style="text-transform:uppercase;" required/>
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Precio por unidad</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="lote_fprecio_unidad" type="number" min="1" max="10000000000" style="text-transform:uppercase;" required (input)="calculaPrecio()" />
+            </div>
+        </div>
+        <div class="field grid">
+            <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Precio</label>
+            <div class="col-12 md:col-10">
+                <input pInputText formControlName="lote_fprecio" type="number" min="1" max="10000000000" style="text-transform:uppercase;" required />
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="map-container" style="height: 300px;">
+                <div class="map-wrapper" style="height: 100%;">
+                    <google-map 
+                        height="100%"
+                        width="100%"
+                        [zoom]="17"
+                        [center]="center"
+                        [options]="options"
+                        (mapClick)="onMapClick($event)">
+                    </google-map>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="field grid">
+            <div class="col-5">
+                <span class="p-buttonset">
+                    <button *ngIf="geocercaCoordinates.length > 0"  pButton pRipple label="Finalizar Geocerca" icon="pi pi-pencil" class="p-button-warning mr-1 btn-sm" type="button" (click)="finishDrawing()"></button>
+                    <button *ngIf="geocercaCoordinates.length > 0"  pButton pRipple icon="pi pi-times" class="p-button-info mr-1 btn-sm" type="button" (click)="clearPolygon()"></button>
+                    <button [disabled]="!createForm.valid" [loading]="guardando" pButton pRipple [label]="Lote && Lote.lote_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                    <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
+                </span>
+            </div>
+        </div>
+    </form>
+</div>
