@@ -4,6 +4,7 @@ import { API_HOST } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Lote, LoteSts } from '../models/lotes';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -16,10 +17,10 @@ export class DbapiService{
         private router: Router,
     ) {}
 
-    getAll(lote_nsts: any) {
-        //this.authS.refreshToken();
-        return this.http.post( this._prefix + '/getall', {sucu_nids: [], lote_nsts: lote_nsts});
+    getAll(lote_nsts: any): Observable<any[]> {
+        return this.http.post<any[]>(this._prefix + '/getall', { sucu_nids: [], lote_nsts: lote_nsts });
     }
+    
 
     save(_lotes : Lote) {
         const data: object = {..._lotes,...this.authS.getUsuarioLog()};
@@ -33,12 +34,26 @@ export class DbapiService{
     setBulkSts(_lotes : LoteSts[]) {
         return this.http.post( this._prefix + '/setbullksts', {data: _lotes, ...this.authS.getUsuarioLog()});
     }
+
+    getSucursales() {
+        const body = {
+            cia_nids: this.authS.isValidCia(false)
+        }
+        return this.http.post( '/api/sucursales/getall', body);
+    }
     
     getProyectos() {
         const body = {
             sucu_nids: this.authS.getSucursalSelected()
         }
         return this.http.post( API_HOST + '/api/proyectos/getall', body);
+    }
+
+    getProyectosAll() {
+        const body = {
+            sucu_nids: null
+        }
+        return this.http.post( API_HOST + '/api/proyectos/getallforclients', body);
     }
 
     getUnimeds(unimed_nsts = [1, 2]) {

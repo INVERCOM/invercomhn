@@ -18,5 +18,10 @@ html, body {
 /* Intenta seleccionar específicamente el botón de cierre */
 .gm-style .gm-ui-hover-effect {
     display: none !important;
-  }
+}
+
+.dropdown-custom {
+    width: 200px !important;  /* Usa !important si hay estilos que lo sobrescriben */
+}
+
   

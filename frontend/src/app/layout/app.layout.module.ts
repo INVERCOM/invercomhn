@@ -47,6 +47,9 @@ import { ShowmePipe } from '../shared/pipes/showme.pipe';
     providers:[
         ShowmePipe
     ],
-    exports: [AppLayoutComponent]
+    exports: [
+        AppLayoutComponent,
+        AppFooterComponent
+    ]
 })
 export class AppLayoutModule { }

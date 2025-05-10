@@ -72,6 +72,25 @@ async function getAll( req, res ) {
     }
 }
 
+async function getAllForClients( req, res ) {
+    try {
+        const data = await Proyectos.findAll({ 
+            where:{
+                proy_nsts: 1,
+            },
+            order: [
+                ['proy_nid', 'DESC'],
+            ],
+            as:'_tproyectos',
+        });
+        res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        global._globalDebug && console.log( `Error ${error}` );
+        res.status(500).send({type:'error', title:'update.toast.title_error' , message:'update.toast.srverror'});   
+    }
+}
+
 function definirRelacionesProyectos() {
     Proyectos.belongsTo(Sucursales,{as:'_tsucursales', foreignKey: 'sucu_nid'});
     Sucursales.hasMany(Proyectos,{as:'_tproyectos', foreignKey : 'sucu_nid'});
@@ -82,5 +101,6 @@ definirRelacionesProyectos();
 module.exports = {
     createProyecto,
     getAll,
+    getAllForClients,
     setSts
 }

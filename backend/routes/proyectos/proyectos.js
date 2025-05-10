@@ -8,5 +8,6 @@ const api = express.Router()
 api.post('/save', candado.verificaToken, Proyectos.createProyecto);
 api.post('/setsts/:id', candado.verificaToken, Proyectos.setSts);
 api.post('/getall', candado.verificaToken, Proyectos.getAll);
+api.post('/getallforclients', Proyectos.getAllForClients);
 
 module.exports=api
