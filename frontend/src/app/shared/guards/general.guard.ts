@@ -14,7 +14,7 @@ export class GeneralGuard implements CanActivate {
   
   canActivate(next: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		// if ( API_HOST == "http://localhost:4000") { return true; } {
-		// 	return true
+		return true
 		// }
 		this.tokenCoded = localStorage.getItem('jwt') || '';
 		this.token = this.authS.parseJwt(this.tokenCoded);
