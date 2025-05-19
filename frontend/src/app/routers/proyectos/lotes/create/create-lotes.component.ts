@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output, OnChanges, OnDestroy, V
 import { DbapiService } from '../services/dbapi.service';
 import { Lote } from '../models/lotes';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject, take, takeUntil } from 'rxjs';
+import { map, Subject, take, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { SkNsCore } from 'src/app/shared/services/sockets.service';
-import { GoogleMap } from '@angular/google-maps';
+import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 interface CheesyObject { id: string; text: string; obj: object}
 @Component({
   selector: 'app-create-lotes',
@@ -15,13 +15,20 @@ interface CheesyObject { id: string; text: string; obj: object}
 
 export class CreateLotesComponent {
 	@ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
-	
+	@ViewChild(MapInfoWindow, { static: false }) infoWindow!: MapInfoWindow;
+
+    infoContent: string = ''; 
+	dataOriginal: any[] = [];
+    data: any[] = [];
 	public createForm: FormGroup;
+    public primeraCons: boolean = false;
     public guardando: boolean = false;
     public itemDialog: boolean = false;
     public submitted: boolean = false;
     public proyectos: CheesyObject[] = [];
 	public unimeds: CheesyObject[] = [];
+    infoWindowPosition: google.maps.LatLng | undefined;
+	polygons: google.maps.Polygon[] = [];
 	center: google.maps.LatLngLiteral = { lat: 14.5934, lng: -87.8336 };
 	public options: google.maps.MapOptions = {}
     geocercaCoordinates: google.maps.LatLngLiteral[] = [];
@@ -64,30 +71,31 @@ export class CreateLotesComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'terrain',
+			mapTypeId: 'hybrid',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
 			mapTypeControl: true
 		}
 		authS.øbserverCompanySelected.pipe( takeUntil(this.$destroy) ).subscribe((x: any) => {
-            this.consultas();
+            //this.consultas();
         });
     }
 
-	consultas(){
-		this.getProyectos();
-		this.getUnimeds();
-	}
-
+    consultas(){
+        this.getProyectos();
+        this.getUnimeds();
+        this.getData();
+    }
+    
 	ngOnChanges() {
-		this.updatePolygon();
+        this.consultas();
         if (this.Lote && this.Lote?.lote_nid && this.Lote?.lote_nid > 0) {
 			this.geocercaCoordinates = JSON.parse(this.Lote?.lote_vgeopath!);
-			this.center = this.geocercaCoordinates[0];
             this.lote_nid?.setValue(this.Lote?.lote_nid)
             this.proy_nid?.setValue(this.Lote?.proy_nid)
 			this.unimed_nid?.setValue(this.Lote?.unimed_nid)
+            this.center = this.geocercaCoordinates[0];
             this.lote_vnombre?.setValue(this.Lote?.lote_vnombre)
             this.lote_vcodigo?.setValue(this.Lote?.lote_vcodigo)
             this.lote_fmedida?.setValue(this.Lote?.lote_fmedida)
@@ -119,6 +127,84 @@ export class CreateLotesComponent {
                 this.edit.emit({ type: 'error', title: 'Ha ocurrido un error', message: err })
             }
         });
+    }
+
+    getData(){
+        this.data = [];
+        this.dataOriginal = [];
+        this.dbapi.getAll(null).pipe(
+            map((res: any[]) => {
+                res.forEach((val: any) => {
+                    val['proy_vnombre'] = val['_tproyectos'] ? val['_tproyectos']['proy_vnombre'] : '';
+                    val['unimed_vdescripcion'] = val['_tunidades_medidas'] ? val['_tunidades_medidas']['unimed_vdescripcion'] : '';
+                    val['lote_vsts'] = val['lote_nsts'] == 1 ? 'ACTIVO' : 'ELIMINADO';
+                });
+                this.dataOriginal = [...res];
+                this.data = [...res];
+                return res;
+            }),
+            take(1)
+        ).subscribe({
+            next: () => {
+                this.setProyecto(this.proy_nid?.value) 
+            }
+        });
+    }
+
+    setProyecto(e: any) {
+		for (let index = 0; index < this.polygons.length; index++) {
+			const element = this.polygons[index];
+			element.setMap(null);
+		}
+		this.polygons = [];
+		if (e && e.id) {
+			this.data =  this.dataOriginal.filter(item => item['proy_nid'] === e.id);
+		}else{
+			this.data = [...this.dataOriginal]
+		}
+		this.drawGeocercas(this.data);
+    }
+    
+    drawGeocercas(data: any[]){
+        data.forEach((element: any) => {
+            if (element['lote_vgeopath'] && element['lote_nid'] != this.lote_nid?.value) {
+                let fillColor = '#00FF00';
+                const infoContent = `
+                    <p style="color: black;">
+                        <b>${element['lote_vnombre']}</b> | ${element['proy_vnombre']}<br>
+                        <strong>Área:</strong> ${element['lote_fmedida']} m²<br>
+                        <strong>Largo:</strong> ${element['lote_flargo']} m<br>
+                        <strong>Ancho:</strong> ${element['lote_fancho']} m<br>
+                    </p>
+                `;
+                this.drawGeofence(
+                    JSON.parse(element['lote_vgeopath']),
+                    infoContent,
+                    fillColor
+                );
+            }
+        });
+    }
+    
+    drawGeofence(geoPath: { lat: number; lng: number }[], tooltipText: string, fillColor: string) {
+        const polygon = new google.maps.Polygon({
+            paths: geoPath,
+            strokeColor: 'black',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: fillColor,
+            fillOpacity: 0.35,
+        });
+        
+        polygon.setMap(this.map.googleMap!);
+        polygon.addListener('click', (event: google.maps.MapMouseEvent) => {
+            if (event.latLng) { 
+                this.infoContent = tooltipText;
+                this.infoWindowPosition = event.latLng;
+                this.infoWindow.open(); 
+            }
+        });
+        this.polygons.push(polygon); 
     }
 
 	getUnimeds() {
@@ -230,7 +316,8 @@ export class CreateLotesComponent {
                         this.limpiarForm();
                     }
                     this.edit.emit(res)
-                    this.guardando = false;
+                    this.guardando = false;        
+                    this.clearPolygon();
                 }, error: (err) => {
                     console.log(err);
                     this.guardando = false;
