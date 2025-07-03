@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const API_HOST = 'http://localhost:4000';
+export const API_HOST = 'http://localhost:4500';
 
 /*
  * For easier debugging in development mode, you can import the following file

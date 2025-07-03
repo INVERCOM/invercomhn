@@ -27,6 +27,8 @@ export class CreateLotesComponent {
     public submitted: boolean = false;
     public proyectos: CheesyObject[] = [];
 	public unimeds: CheesyObject[] = [];
+    public uploadedFiles: any[] = [];
+    public img: any;
     infoWindowPosition: google.maps.LatLng | undefined;
 	polygons: google.maps.Polygon[] = [];
 	center: google.maps.LatLngLiteral = { lat: 14.5934, lng: -87.8336 };
@@ -105,7 +107,11 @@ export class CreateLotesComponent {
             this.lote_fprecio_unidad?.setValue(this.Lote?.lote_fprecio_unidad)
 			this.lote_vgeopath?.setValue(this.Lote?.lote_vgeopath)
             this.lote_nsts?.setValue(this.Lote?.lote_nsts)
+            this.img = null;
 			this.updatePolygon();
+            this.dbapi.getImg(this.Lote?.lote_nid).pipe(take(1)).subscribe((x: any) => {
+                x && (this.img = x);
+              });
         }
     }
 
@@ -310,7 +316,7 @@ export class CreateLotesComponent {
 				lote_fprecio: this.lote_fprecio?.value,
                 lote_nsts: 1
             }
-            this.dbapi.save(_Lote).pipe(take(1)).subscribe({ next: (res: any) => {
+            this.dbapi.save(_Lote, this.img).pipe(take(1)).subscribe({ next: (res: any) => {
                     if (res.type == 'success') {
                         this.skNsCore.notificarUpsert('/proyectos/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
                         this.limpiarForm();
@@ -330,6 +336,7 @@ export class CreateLotesComponent {
     limpiarForm(){
         this.createForm.reset();
         this.lote_nid?.setValue(0);
+        this.onRemove({files: []});
     }
 
     hideDialog() {
@@ -345,6 +352,49 @@ export class CreateLotesComponent {
             }
         }
         return '';
+    }
+
+    onSelect(event: any) {
+        for (const file of event.files) {
+            this.uploadedFiles.push(file);
+            const archivo: File = file;
+            this.convertirArchivoABase64(archivo)
+                .then(base64 => {
+                    this.img = base64;
+                })
+                .catch(error => {
+                    console.error('Error al convertir archivo a base64:', error);
+                });
+        }
+        console.log('onSelect', this.uploadedFiles);
+    }
+
+    onRemove(event: any) {
+        this.uploadedFiles = [];
+        this.img = null;
+    }
+
+    convertirArchivoABase64(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64String = reader.result as string;
+            resolve(base64String.split(',')[1]); // Eliminar el prefijo "data:image/png;base64," o similar
+          };
+          reader.onerror = error => reject(error);
+          reader.readAsDataURL(file);
+        });
+    }
+
+    convertirBase64AFile(base64String: string, nombreArchivo: string): File {
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+        return new File([blob], nombreArchivo);
     }
 
     ngOnDestroy() {

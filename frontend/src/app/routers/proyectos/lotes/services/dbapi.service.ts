@@ -18,12 +18,11 @@ export class DbapiService{
     ) {}
 
     getAll(lote_nsts: any): Observable<any[]> {
-        return this.http.post<any[]>(this._prefix + '/getall', { sucu_nids: [], lote_nsts: lote_nsts });
+        return this.http.post<any[]>(this._prefix + '/getall', { sucu_nids: this.authS.getSucursalSelected(), lote_nsts: lote_nsts });
     }
     
-
-    save(_lotes : Lote) {
-        const data: object = {..._lotes,...this.authS.getUsuarioLog()};
+    save(_lotes : Lote, img: any = null) {
+        const data: object = {..._lotes,...this.authS.getUsuarioLog(), img};
         return this.http.post( this._prefix + '/save', data);
     }
 
@@ -64,4 +63,8 @@ export class DbapiService{
         }
         return this.http.post( API_HOST + '/api/unidadesmedidas/getall', body);
     }
+    
+    getImg( lote_nid: number ) {
+        return this.http.post( this._prefix + '/getimg', {file: lote_nid, lote_nid});
+      }
 }
