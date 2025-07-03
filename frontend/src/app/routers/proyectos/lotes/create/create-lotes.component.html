@@ -50,7 +50,16 @@
                 <input pInputText formControlName="lote_fprecio" type="number" min="1" max="10000000000" style="text-transform:uppercase;" required />
             </div>
         </div>
-        <div class="col-12">
+        <p-fileUpload #fileUpload [multiple]="true" accept="image/*" [showUploadButton]="false" [maxFileSize]="1000000" [fileLimit]="1" [customUpload]="true" (onSelect)="onSelect($event)" (onRemove)="onRemove($event)" (onClear)="onRemove($event)" chooseLabel="Seleccionar...">
+            <ng-template let-file pTemplate="file" style="display: none;">
+                <div></div>
+            </ng-template>
+            <ng-template let-file pTemplate="content" style="display: none;">
+                <div></div>
+            </ng-template>
+        </p-fileUpload>
+        <img *ngIf="img && img !== ''" [src]="'data:image/png;base64,'+ img" style="max-width: 300px; margin-left: auto; margin-right: auto; margin-top: 5px;"/>
+        <div class="col-12 ml-1 mr-1">
             <div class="map-container" style="height: 300px;">
                 <div class="map-wrapper" style="height: 100%;">
                     <google-map 

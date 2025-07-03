@@ -3,28 +3,32 @@ const { Op } = require("sequelize");
 const Sequelize = require('../../database/postgres/conexion');
 const Cias = require('../../models/admin/_tcias');
 const CiasModulos = require('../../models/admin/_tasig_cias_modulos');
+const FTPController = require('../FTP/ftpcontroller');
 const Monedas = require('../../models/admin/_tmonedas');
 const LogControllers = require('../logs/logs');
 
 async function save( req, res ) {
     const userLog = req.body['_tp_tusuarioLog'];
     delete req.body['_tp_tusuarioLog'];
+    const img = req.body['img'];
+    delete req.body['img'];
     const t = await Sequelize.transaction();
     try {
         !(req.body['cia_nid'] > 0) && (req.body['cia_nid'] = null);
         if (req.body['cia_nid'] > 0) {
             const cia = req.body;
             const result = await Cias.update(cia, {where: { cia_nid: cia.cia_nid }, transaction: t});
+            img && await FTPController.uploadFile('/cias-'+cia['cia_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:cia, message:'Registro actualizado exitosamente'});
             LogControllers.saveLog(cia.cia_nid, cia.cia_nid, '_tcias', [userLog], 2, [cia])
         } else {
             const cia = Cias.build(req.body);
             const result = await cia.save({transaction: t});
+            img && await FTPController.uploadFile('/cias-'+cia['cia_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:cia, message:'Registro guardado exitosamente'});
             LogControllers.saveLog(cia.cia_nid, cia.cia_nid, '_tcias', [userLog], 1, [cia])
         }
         await t.commit();
-
     } catch (error) {
         global._globalDebug && console.log(global.FgRed, `Error ${error}`, );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
@@ -43,7 +47,6 @@ async function setSts( req, res ) {
         LogControllers.saveLog(id, id, '_tcias', [userLog], 0, [cia])
         result && res.status(201).send({type:'success', title:'Éxito', data:cia, message:'Registro cambiado exitosamente'});
         await t.commit();
-        
     } catch (error) {
         global._globalDebug && console.log(global.FgRed, `Error ${error}`, );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
@@ -62,7 +65,6 @@ async function setBulkSts( req, res ) {
         }
         res.status(201).send({type:'success', title:'Éxito', message:'Registros cambiados exitosamente'});
         await t.commit();
-        
     } catch (error) {
         global._globalDebug && console.log(global.FgRed, `Error ${error}`, );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});

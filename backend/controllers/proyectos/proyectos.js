@@ -1,24 +1,27 @@
 const Sequelize = require('../../database/postgres/conexion');
 const Proyectos = require('../../models/proyectos/_tproyectos');
 const Sucursales = require('../../models/admin/_tsucursales');
-const Monedas = require('../../models/admin/_tmonedas');
-const Usuarios = require('../../models/admin/_tusuarios');
+const FTPController = require('../FTP/ftpcontroller');
 const logsController = require('../logs/logs');
 
 async function createProyecto( req, res ) {
     const userLog = req.body['_tp_tusuarioLog'];
     delete req.body['_tp_tusuarioLog'];
+    const img = req.body['img'];
+    delete req.body['img'];
     const t = await Sequelize.transaction();
     try {
         if (req.body['proy_nid'] > 0) {
             const proyecto = req.body;
             const result = await Proyectos.update(proyecto, {where: { proy_nid: proyecto.proy_nid }, transaction: t});
+            img && await FTPController.uploadFile('/proyectos-'+proyecto['proy_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:proyecto, message:'Registro actualizado exitosamente'});
             logsController.saveLog(proyecto.proy_nid, proyecto.proy_nid, '_tproyectos', [userLog], 2, [proyecto]);
 
         } else {
             const proyecto = Proyectos.build(req.body);
             const result = await proyecto.save({transaction: t});
+            img && await FTPController.uploadFile('/proyectos-'+proyecto['proy_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:proyecto, message:'Registro guardado exitosamente'});
             logsController.saveLog(proyecto.proy_nid, proyecto.proy_nid, '_tproyectos', [userLog], 1, [proyecto]);
         }

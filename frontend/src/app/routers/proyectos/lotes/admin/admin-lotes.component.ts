@@ -75,6 +75,7 @@ export class AdminLotesComponent implements OnDestroy {
         }),
         take(1)).subscribe({ next: (data: any): void => {
                 this.data = [...data];
+                console.log('data', this.data);
                 this.isLoadingTable = false;
             }, error: (err) => {
                 console.log(err);
