@@ -95,7 +95,7 @@ export class LotesViewGeneralComponent {
 
 	getData(){
 		this.polygons = [];
-		this.dbapi.getAll(null).pipe(
+		this.dbapi.getAllFree(null).pipe(
             map((res: any[]) => {
                 res.forEach((val: any) => {
                     val['proy_vnombre'] = val['_tproyectos'] ? val['_tproyectos']['proy_vnombre'] : '';

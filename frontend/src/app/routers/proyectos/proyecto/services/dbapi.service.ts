@@ -17,7 +17,7 @@ export class DbapiService{
     ) {}
 
     getAll(proy_nsts: any = [1]) {
-        this.authS.refreshToken();
+       // this.authS.refreshToken();
         return this.http.post( this._prefix + '/getall', {proy_nsts : proy_nsts, sucu_nids: this.authS.getSucursalSelected()});
     }
 

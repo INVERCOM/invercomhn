@@ -55,7 +55,6 @@ async function setSts( req, res ) {
 
 async function getAll( req, res ) {
     try {
-        console.log('req.body', req.body);
         const data = await Lotes.findAll({ 
                 where:{ lote_nsts: req.body['lote_nsts'] ? req.body['lote_nsts'] : [1,2,3,4,5,6] },
                 order: [ ['lote_nid', 'DESC'] ],
@@ -63,6 +62,30 @@ async function getAll( req, res ) {
                 include: [{
                     model:Proyectos,
                     where:{ sucu_nid: req.body['sucu_nids'] ? req.body['sucu_nids'] : [] },
+                    required: true,
+                    as:'_tproyectos',
+                },{
+                    model:Unimeds,
+                    as:'_tunidades_medidas',
+                }
+            ] 
+        });
+        res.status(200).json(data);
+    } catch (error) {
+        console.log(error);
+        global._globalDebug && console.log( `Error ${error}` );
+        res.status(500).send({type:'error ', title:'update.toast.title_error' , message:'update.toast.srverror'});   
+    }
+}
+
+async function getAllFrree( req, res ) {
+    try {
+        const data = await Lotes.findAll({ 
+                where:{ lote_nsts : [1,2,3,4,5,6] },
+                order: [ ['lote_nid', 'DESC'] ],
+                as:'_tlotes',
+                include: [{
+                    model:Proyectos,
                     required: true,
                     as:'_tproyectos',
                 },{
@@ -102,5 +125,6 @@ module.exports = {
     createLote,
     setSts,
     getAll,
+    getAllFrree,
     getImg
 }

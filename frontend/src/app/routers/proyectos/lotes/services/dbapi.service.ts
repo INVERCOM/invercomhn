@@ -20,6 +20,11 @@ export class DbapiService{
     getAll(lote_nsts: any): Observable<any[]> {
         return this.http.post<any[]>(this._prefix + '/getall', { sucu_nids: this.authS.getSucursalSelected(), lote_nsts: lote_nsts });
     }
+
+
+    getAllFree(lote_nsts: any): Observable<any[]> {
+        return this.http.post<any[]>(this._prefix + '/getallfree', { });
+    }
     
     save(_lotes : Lote, img: any = null) {
         const data: object = {..._lotes,...this.authS.getUsuarioLog(), img};
@@ -56,7 +61,7 @@ export class DbapiService{
     }
 
     getUnimeds(unimed_nsts = [1, 2]) {
-        this.authS.refreshToken();
+       // this.authS.refreshToken();
         const body = {
             cia_nids: this.authS.isValidCia(false),
             unimed_nsts

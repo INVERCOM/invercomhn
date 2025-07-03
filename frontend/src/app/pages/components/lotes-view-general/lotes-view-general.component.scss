@@ -20,8 +20,10 @@ html, body {
     display: none !important;
 }
 
-.dropdown-custom {
-    width: 200px !important;  /* Usa !important si hay estilos que lo sobrescriben */
+.dropdown-custom .p-dropdown {
+    width: 300px !important;
 }
 
-  
+.p-dropdown {
+    width: 300px !important;
+}

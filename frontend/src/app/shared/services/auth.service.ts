@@ -107,8 +107,8 @@ export class AuthService implements OnDestroy {
 			return true;
 		})
 		.catch((err) => {
-			console.log(err);
-			this.logOut();
+			console.log('Error:', err);
+			//this.logOut();
 			return false;
 		});
 	}

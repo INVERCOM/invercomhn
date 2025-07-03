@@ -11,8 +11,8 @@
         
         <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
             <h5 class="mr-3 mt-2">Residenciales</h5>
-            <div class="flex">
-                <p-dropdown  class="dropdown-custom" [options]="residenciales" optionLabel="text" filterBy="text" (onChange)="setProyecto($event.value);" [virtualScroll]="residenciales.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+            <div class="flex mt-1">
+                <p-dropdown class="dropdown-custom" [options]="residenciales" optionLabel="text" filterBy="text" (onChange)="setProyecto($event.value);" [virtualScroll]="residenciales.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
             </div>
             <button class="p-link layout-topbar-button" [routerLink]="'/login'">
                 <i class="pi pi-power-off"></i>
@@ -23,7 +23,7 @@
     <div class="w-screen h-screen">
         <div class="w-full h-full">
             <div class="col-12">
-                <div class="map-container" style="height: 96vh;">
+                <div class="map-container mt-4" style="height: 96vh;">
                     <div class="map-wrapper" style="height: 100%;">
                         <google-map #googleMap
                             height="100%"
