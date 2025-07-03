@@ -6,6 +6,7 @@
 # Node artifact files
 node_modules/
 backend/node_modules/
+backend/images/*
 dist/
 .env
 # private_key.pem
