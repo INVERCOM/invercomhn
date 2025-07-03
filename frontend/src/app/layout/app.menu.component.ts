@@ -36,10 +36,10 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label:'Proyectos',
+                label:'Residenciales',
                 visible: this.showMe.transform('/proyectos') || true,
                 items: [
-                    {label: 'Proyectos', icon: 'pi pi-fw pi-building', routerLink: ['/proyectos/proyecto'], visible: this.showMe.transform('/proyectos/proyecto')},
+                    {label: 'Residenciales', icon: 'pi pi-fw pi-building', routerLink: ['/proyectos/proyecto'], visible: this.showMe.transform('/proyectos/proyecto')},
                     {label: 'Lotes', icon: 'pi pi-fw pi-th-large', routerLink: ['/proyectos/lotes'], visible: this.showMe.transform('/proyectos/lotes')},
                     {label: 'Venta lotes', icon: 'pi pi-fw pi-dollar', routerLink: ['/proyectos/ventaslotes'], visible: this.showMe.transform('/proyectos/ventaslotes')},
                     {label: 'Pagos lotes', icon: 'pi pi-fw pi-money-bill', routerLink: ['/proyectos/pagoslotes'], visible: this.showMe.transform('/proyectos/pagoslotes')},

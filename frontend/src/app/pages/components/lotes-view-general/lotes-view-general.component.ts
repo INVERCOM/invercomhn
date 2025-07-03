@@ -4,6 +4,7 @@ import { DbapiService } from 'src/app/routers/proyectos/lotes/services/dbapi.ser
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-lotes-view-general',
@@ -16,8 +17,9 @@ export class LotesViewGeneralComponent {
 	@ViewChild(GoogleMap, { static: false }) googleMap!: GoogleMap;
 	@ViewChild(MapInfoWindow, { static: false }) infoWindow!: MapInfoWindow;
 
-	infoContent: string = ''; 
-	public proyectos : any;
+	infoContent: SafeHtml = '';
+	selectedLote: any = null;
+	public residenciales : any;
 	public proyecto : any;
 	dataOriginal: any[] = [];
     data: any[] = [];
@@ -27,6 +29,7 @@ export class LotesViewGeneralComponent {
 	public options: google.maps.MapOptions = {}
 
 	constructor(
+		private sanitizer: DomSanitizer,
         private dbapi: DbapiService,
         public authS: AuthService,
 		public layoutService: LayoutService, 
@@ -35,7 +38,7 @@ export class LotesViewGeneralComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'terrain',
+			mapTypeId: 'hybrid',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
@@ -74,16 +77,16 @@ export class LotesViewGeneralComponent {
     }
 
 	getProyectos() {
-        this.proyectos = [];
+        this.residenciales = [];
         this.dbapi.getProyectosAll().pipe(take(1)).subscribe({ next: (data: any) => {
             if ( !data || data == null || data === '' ) {
-				console.log('Error consultando proyectos');
+				console.log('Error consultando residenciales');
 				return;
 			}
-			this.proyectos.push({id:0, text:'', obj:null})
+			this.residenciales.push({id:0, text:'', obj:null})
 			for (const key in data) {
 				const item={id:data[key]['proy_nid'], text:data[key]['proy_vnombre'], obj:data[key]}
-				this.proyectos = [ ...this.proyectos, item ];
+				this.residenciales = [ ...this.residenciales, item ];
 			}}, error: (err: any) => {
                 console.log(err);
             }
@@ -112,7 +115,7 @@ export class LotesViewGeneralComponent {
 	}
 
 	drawGeocercas(data: any[]){
-		data.forEach((element: any) => {
+		data.forEach((element: any, index) => {
 			if (element['lote_vgeopath']) {
 				let fillColor;
 				let statusText;
@@ -138,28 +141,28 @@ export class LotesViewGeneralComponent {
 						statusText = 'Desconocido'; // Estatus desconocido
 						break;
 				}
-
-				const infoContent = `
-					<p style="color: black;">
-						<b>${element['lote_vnombre']}</b> | ${element['proy_vnombre']}<br>
-						<strong>Área:</strong> ${element['lote_fmedida']} m²<br>
-						<strong>Precio:</strong> L.${element['lote_fprecio']}<br>
-						<strong>Largo:</strong> ${element['lote_flargo']} m<br>
-						<strong>Ancho:</strong> ${element['lote_fancho']} m<br>
-						<strong>Status:</strong> ${statusText}
-					</p>
-				`;
-
-				this.drawGeofence(
-					JSON.parse(element['lote_vgeopath']),
-					infoContent,
-					fillColor
-				);
+				if (index < data.length - 1) {
+					this.drawGeofence(
+						JSON.parse(element['lote_vgeopath']),
+						'',
+						fillColor,
+						false,
+						element
+					);
+				}else{
+					this.drawGeofence(
+						JSON.parse(element['lote_vgeopath']),
+						'',
+						fillColor,
+						true,
+						element
+					);
+				}
 			}
 		});
 	}
 	
-	drawGeofence(geoPath: { lat: number; lng: number }[], tooltipText: string, fillColor: string) {
+	drawGeofence(geoPath: { lat: number; lng: number }[], tooltipText: string, fillColor: string, esUltimo = false, row: any) {
 		const polygon = new google.maps.Polygon({
 			paths: geoPath,
 			strokeColor: 'black',
@@ -171,11 +174,27 @@ export class LotesViewGeneralComponent {
 		
 		polygon.setMap(this.googleMap.googleMap!);
 		
+		if (esUltimo) {
+			const bounds = new google.maps.LatLngBounds();
+			geoPath.forEach(coord => {
+				if (coord.lat !== 0 && coord.lng !== 0) {
+					bounds.extend(new google.maps.LatLng(coord.lat, coord.lng));
+				}
+			});
+			if (!bounds.isEmpty()) {
+				const center = bounds.getCenter();
+				this.googleMap.googleMap!.setCenter(center);
+			} else {
+			  	console.warn('No se pudo calcular bounds, todos los puntos son (0,0)?');
+			}
+		}
+
 		polygon.addListener('click', (event: google.maps.MapMouseEvent) => {
 			if (event.latLng) { 
-				this.infoContent = tooltipText;
+				this.infoContent = this.sanitizer.bypassSecurityTrustHtml(tooltipText);
 				this.infoWindowPosition = event.latLng;
 				this.infoWindow.open(); 
+				this.selectedLote = row;
 			}
 		});
 	
@@ -185,4 +204,14 @@ export class LotesViewGeneralComponent {
 		});
 		this.polygons.push(polygon); 
 	}
+
+	cerrarInfoWindow() {
+		this.infoWindow.close();
+		this.infoWindowPosition = undefined;
+	  }
+	  
+	  verDetalles() {
+		// Aquí puedes navegar o abrir modal, etc.
+		console.log('Detalles del lote:;');
+	  }
 }

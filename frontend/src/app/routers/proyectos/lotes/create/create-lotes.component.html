@@ -3,7 +3,7 @@
         <div class="field grid">
             <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Proyecto</label>
             <div class="col-12 md:col-10">
-                <p-dropdown slot="width: 200px;" [options]="proyectos" (onChange)="setProyecto($event.value);" optionLabel="text" formControlName="proy_nid" [filter]="true" filterBy="text" [virtualScroll]="proyectos.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+                <p-dropdown slot="width: 200px;" [options]="residenciales" (onChange)="setProyecto($event.value);" optionLabel="text" formControlName="proy_nid" [filter]="true" filterBy="text" [virtualScroll]="residenciales.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
             </div>
         </div>
         <div class="field grid">

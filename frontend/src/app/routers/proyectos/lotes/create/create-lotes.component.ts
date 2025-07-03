@@ -25,7 +25,7 @@ export class CreateLotesComponent {
     public guardando: boolean = false;
     public itemDialog: boolean = false;
     public submitted: boolean = false;
-    public proyectos: CheesyObject[] = [];
+    public residenciales: CheesyObject[] = [];
 	public unimeds: CheesyObject[] = [];
     infoWindowPosition: google.maps.LatLng | undefined;
 	polygons: google.maps.Polygon[] = [];
@@ -111,7 +111,7 @@ export class CreateLotesComponent {
 
     getProyectos() {
 		this.proy_nid?.setValue('');
-        this.proyectos = [];
+        this.residenciales = [];
         this.dbapi.getProyectos().pipe(take(1)).subscribe({ next: (data: any) => {
                 if ( !data || data == null || data === '' ) {
                     console.log('Error consultando compañías');
@@ -119,9 +119,9 @@ export class CreateLotesComponent {
                 }
                 for (const key in data) {
                     const item={id:data[key]['proy_nid'], text:data[key]['proy_vnombre'], obj:data[key]}
-                    this.proyectos = [ ...this.proyectos, item ];
+                    this.residenciales = [ ...this.residenciales, item ];
                 }
-                this.proyectos.length == 1 && this.proy_nid?.setValue(this.proyectos[0]);
+                this.residenciales.length == 1 && this.proy_nid?.setValue(this.residenciales[0]);
             }, error: (err) => {
                 console.log(err);
                 this.edit.emit({ type: 'error', title: 'Ha ocurrido un error', message: err })
@@ -312,7 +312,7 @@ export class CreateLotesComponent {
             }
             this.dbapi.save(_Lote).pipe(take(1)).subscribe({ next: (res: any) => {
                     if (res.type == 'success') {
-                        this.skNsCore.notificarUpsert('/proyectos/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
+                        this.skNsCore.notificarUpsert('/residenciales/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
                         this.limpiarForm();
                     }
                     this.edit.emit(res)

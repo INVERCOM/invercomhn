@@ -10,9 +10,9 @@
 
         
         <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-            <h5 class="mr-3 mt-2">Proyectos</h5>
+            <h5 class="mr-3 mt-2">Residenciales</h5>
             <div class="flex">
-                <p-dropdown  class="dropdown-custom" [options]="proyectos" optionLabel="text" filterBy="text" (onChange)="setProyecto($event.value);" [virtualScroll]="proyectos.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
+                <p-dropdown  class="dropdown-custom" [options]="residenciales" optionLabel="text" filterBy="text" (onChange)="setProyecto($event.value);" [virtualScroll]="residenciales.length > 5" [virtualScrollItemSize]="38"></p-dropdown>
             </div>
             <button class="p-link layout-topbar-button" [routerLink]="'/login'">
                 <i class="pi pi-power-off"></i>
@@ -32,7 +32,33 @@
                             [center]="center"
                             [options]="options">
                             <map-info-window [options]="{ position: infoWindowPosition }">
-                                <p style="color: black;" [innerHTML]="infoContent"></p>
+
+                                    <div style="color: #333; font-family: Arial, sans-serif; padding: 12px; max-width: 260px;">
+                                      <h3 style="margin: 0 0 8px 0; color: #1a73e8; font-size: 16px;">Lote {{ selectedLote?.lote_vnombre }}</h3>
+                                      <p style="margin: 0; font-size: 14px;">
+                                        <strong>Proyecto:</strong> {{ selectedLote?.proy_vnombre }}<br>
+                                        <strong>Área:</strong> {{ selectedLote?.lote_fmedida }} m²<br>
+                                        <strong>Precio:</strong> L.{{ selectedLote?.lote_fprecio }}<br>
+                                        <strong>Largo:</strong> {{ selectedLote?.lote_flargo }} m<br>
+                                        <strong>Ancho:</strong> {{ selectedLote?.lote_fancho }} m<br>
+                                        <strong>Status:</strong> {{ selectedLote?.statusText }}
+                                      </p>
+                                  
+                                      <div style="display: flex; justify-content: space-between; margin-top: 12px; margin-right: 25px;">
+                                        <button 
+                                          (click)="verDetalles()" 
+                                          style="background-color: #0aff5066; border: none; color: black;  padding: 6px 10px; border-radius: 4px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                          👁️ Ver detalles
+                                        </button>
+                                  
+                                        <button 
+                                          (click)="cerrarInfoWindow()" 
+                                          style="background-color: #e74c3c; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 13px; cursor: pointer;">
+                                          ❌ Cerrar
+                                        </button>
+                                      </div>
+                                    </div>
+         
                             </map-info-window>
                         </google-map>
                     </div>
