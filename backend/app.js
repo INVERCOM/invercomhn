@@ -32,6 +32,9 @@ app.get('*', (req, res, next) => {
 
 // Rutas
 
+const image_route = require('./routes/images/images')
+app.use('/api/imgs', image_route);
+
 // ======================= ADMIN ==============================
 const usuarios_routes = require('./routes/admin/usuarios');
 const companias_routes = require('./routes/admin/companias');

@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { API_HOST } from 'src/environments/environment';
 
 @Component({
     selector: 'app-lotes-view-general',
@@ -17,6 +18,7 @@ export class LotesViewGeneralComponent {
 	@ViewChild(GoogleMap, { static: false }) googleMap!: GoogleMap;
 	@ViewChild(MapInfoWindow, { static: false }) infoWindow!: MapInfoWindow;
 
+	apihost = API_HOST;
 	infoContent: SafeHtml = '';
 	selectedLote: any = null;
 	public residenciales : any;

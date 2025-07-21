@@ -80,23 +80,23 @@ export class CreateLotesComponent {
 			mapTypeControl: true
 		}
 		authS.øbserverCompanySelected.pipe( takeUntil(this.$destroy) ).subscribe((x: any) => {
-            //this.consultas();
+            this.consultas();
+            this.getUnimeds();
         });
     }
 
     consultas(){
         this.getProyectos();
-        this.getUnimeds();
         this.getData();
     }
     
 	ngOnChanges() {
-        this.consultas();
         if (this.Lote && this.Lote?.lote_nid && this.Lote?.lote_nid > 0) {
-			this.geocercaCoordinates = JSON.parse(this.Lote?.lote_vgeopath!);
+            this.geocercaCoordinates = JSON.parse(this.Lote?.lote_vgeopath!);
             this.lote_nid?.setValue(this.Lote?.lote_nid)
-            this.proy_nid?.setValue(this.Lote?.proy_nid)
-			this.unimed_nid?.setValue(this.Lote?.unimed_nid)
+            this.proy_nid?.setValue(this.searchById(this.Lote?.proy_nid, this.residenciales))
+            this.getData();
+			this.unimed_nid?.setValue(this.searchById(this.Lote?.unimed_nid, this.unimeds))
             this.center = this.geocercaCoordinates[0];
             this.lote_vnombre?.setValue(this.Lote?.lote_vnombre)
             this.lote_vcodigo?.setValue(this.Lote?.lote_vcodigo)
@@ -111,7 +111,7 @@ export class CreateLotesComponent {
 			this.updatePolygon();
             this.dbapi.getImg(this.Lote?.lote_nid).pipe(take(1)).subscribe((x: any) => {
                 x && (this.img = x);
-              });
+            });
         }
     }
 
@@ -128,6 +128,7 @@ export class CreateLotesComponent {
                     this.residenciales = [ ...this.residenciales, item ];
                 }
                 this.residenciales.length == 1 && this.proy_nid?.setValue(this.residenciales[0]);
+                this.residenciales = [...this.residenciales]
             }, error: (err) => {
                 console.log(err);
                 this.edit.emit({ type: 'error', title: 'Ha ocurrido un error', message: err })
@@ -155,6 +156,10 @@ export class CreateLotesComponent {
                 this.setProyecto(this.proy_nid?.value) 
             }
         });
+    }
+
+    verData(){
+        console.log('residenciales',this.residenciales);
     }
 
     setProyecto(e: any) {
