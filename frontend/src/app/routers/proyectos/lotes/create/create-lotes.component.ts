@@ -80,7 +80,7 @@ export class CreateLotesComponent {
 			mapTypeControl: true
 		}
 		authS.øbserverCompanySelected.pipe( takeUntil(this.$destroy) ).subscribe((x: any) => {
-            //this.consultas();
+            this.consultas();
         });
     }
 
@@ -91,8 +91,8 @@ export class CreateLotesComponent {
     }
     
 	ngOnChanges() {
-        this.consultas();
         if (this.Lote && this.Lote?.lote_nid && this.Lote?.lote_nid > 0) {
+            this.consultas();
 			this.geocercaCoordinates = JSON.parse(this.Lote?.lote_vgeopath!);
             this.lote_nid?.setValue(this.Lote?.lote_nid)
             this.proy_nid?.setValue(this.Lote?.proy_nid)
@@ -119,6 +119,7 @@ export class CreateLotesComponent {
 		this.proy_nid?.setValue('');
         this.residenciales = [];
         this.dbapi.getProyectos().pipe(take(1)).subscribe({ next: (data: any) => {
+            console.log('getProyectos',data);
                 if ( !data || data == null || data === '' ) {
                     console.log('Error consultando compañías');
                     return;
@@ -128,6 +129,8 @@ export class CreateLotesComponent {
                     this.residenciales = [ ...this.residenciales, item ];
                 }
                 this.residenciales.length == 1 && this.proy_nid?.setValue(this.residenciales[0]);
+                this.residenciales = [...this.residenciales]
+                console.log('residenciales',this.residenciales);
             }, error: (err) => {
                 console.log(err);
                 this.edit.emit({ type: 'error', title: 'Ha ocurrido un error', message: err })
@@ -155,6 +158,10 @@ export class CreateLotesComponent {
                 this.setProyecto(this.proy_nid?.value) 
             }
         });
+    }
+
+    verData(){
+        console.log('residenciales',this.residenciales);
     }
 
     setProyecto(e: any) {

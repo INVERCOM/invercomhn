@@ -48,7 +48,8 @@ export class DbapiService{
     
     getProyectos() {
         const body = {
-            sucu_nids: this.authS.getSucursalSelected()
+            sucu_nids: this.authS.getSucursalSelected(),
+            proy_nsts: 1
         }
         return this.http.post( API_HOST + '/api/proyectos/getall', body);
     }
