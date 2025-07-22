@@ -91,11 +91,11 @@ export class CreateLotesComponent {
     }
     
 	ngOnChanges() {
+        this.getData();
         if (this.Lote && this.Lote?.lote_nid && this.Lote?.lote_nid > 0) {
             this.geocercaCoordinates = JSON.parse(this.Lote?.lote_vgeopath!);
             this.lote_nid?.setValue(this.Lote?.lote_nid)
             this.proy_nid?.setValue(this.searchById(this.Lote?.proy_nid, this.residenciales))
-            this.getData();
 			this.unimed_nid?.setValue(this.searchById(this.Lote?.unimed_nid, this.unimeds))
             this.center = this.geocercaCoordinates[0];
             this.lote_vnombre?.setValue(this.Lote?.lote_vnombre)

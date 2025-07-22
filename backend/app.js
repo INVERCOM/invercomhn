@@ -21,6 +21,9 @@ app.use((req, res, next) => {
     next();
 });
 
+const image_route = require('./routes/images/images')
+app.use('/api/imgs', image_route);
+
 // Rutas
 app.get('*', (req, res, next) => {
 	if (req.accepts('html')) {
@@ -31,9 +34,6 @@ app.get('*', (req, res, next) => {
 });
 
 // Rutas
-
-const image_route = require('./routes/images/images')
-app.use('/api/imgs', image_route);
 
 // ======================= ADMIN ==============================
 const usuarios_routes = require('./routes/admin/usuarios');

@@ -32,7 +32,7 @@
                             [center]="center"
                             [options]="options">
                             <map-info-window [options]="{ position: infoWindowPosition }">
-                                <div style="color: #333; font-family: Arial, sans-serif; padding: 12px; max-width: 260px;">
+                                <div style="color: #333; font-family: Arial, sans-serif; padding: 12px; max-width: 400px;">
                                     <h3 style="margin: 0 0 8px 0; color: #1a73e8; font-size: 16px;">Lote {{ selectedLote?.lote_vnombre }}</h3>
                                     <p style="margin: 0; font-size: 14px;">
                                         <strong>Proyecto:</strong> {{ selectedLote?.proy_vnombre }}<br>
@@ -43,18 +43,23 @@
                                         <strong>Status:</strong> {{ selectedLote?.statusText }}
                                     </p>
                                     <hr>
-                                    <img 
-                                        [src]="apihost + '/api/imgs/lotes/' + selectedLote?.lote_nid" 
-                                        alt="Imagen del lote" 
-                                        style="width: 100%; height: 500px; object-fit: cover; margin-bottom: 10px;" />
+                                    <!-- <a 
+                                        [href]="apihost + '/api/imgs/lotes/' + selectedLote?.lote_nid" 
+                                        target="_blank" 
+                                        style="display: block; margin-bottom: 10px;">  -->
+                                        <img 
+                                            [src]="apihost + '/api/imgs/lotes/' + selectedLote?.lote_nid" 
+                                            alt="Imagen del lote" 
+                                            style="width: 100%; height: 470px; object-fit: cover; margin-bottom: 10px;" />
+                                    <!-- </a> -->
                                     <hr>
-                                    <div style="display: flex; justify-content: space-between; margin-top: 12px; margin-right: 25px;">
+                                    <!-- <div style="display: flex; justify-content: space-between; margin-top: 12px; margin-right: 25px;">
                                         <button 
                                           (click)="cerrarInfoWindow()" 
                                           style="background-color: #e74c3c; color: white; border: none; padding: 6px 10px; border-radius: 4px; font-size: 13px; cursor: pointer;">
                                           ❌ Cerrar
                                         </button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </map-info-window>
                         </google-map>
