@@ -12,7 +12,7 @@ api.get('/companias/:id', (req, res, next) => {
 		return;
 	} else {
 		console.log('Archivo inexistente');
-		res.sendFile(path.join(__dirname, '../../FTP/default-images/default-0.png') )
+		res.sendFile(path.join(__dirname, '../../controllers/FTP/default-images/default-0.png') )
 	}
 });
 
@@ -23,7 +23,7 @@ api.get('/proyectos/:id', (req, res, next) => {
 		return;
 	} else {
 		console.log('Archivo inexistente');
-		res.sendFile(path.join(__dirname, '../../FTP/default-images/default-0.png') )
+		res.sendFile(path.join(__dirname, '../../controllers/FTP/default-images/default-0.png') )
 	}
 });
 
@@ -34,7 +34,7 @@ api.get('/lotes/:id', (req, res, next) => {
 		return;
 	} else {
 		console.log('Archivo inexistente');
-		res.sendFile(path.join(__dirname, '../../FTP/default-images/default-0.png') )
+		res.sendFile(path.join(__dirname, '../../controllers/FTP/default-images/default-0.png') )
 	}
 });
 
