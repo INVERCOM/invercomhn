@@ -323,7 +323,7 @@ async function saveFactura( req, res ) {
 //             res.status(200).json(data);
 //         }
 //     } catch (error) {
-//         global._globalDebug && console.log( `Error ${error}` );
+//        global._globalDebug && console.log( `Error`, error );
 //         res.status(500).send({type:'error', title:'update.toast.title_error' , message:'update.toast.srverror'});   
 //     }
 // }
