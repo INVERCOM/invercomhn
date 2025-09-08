@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express')
+const FacturasController =  require( '../../controllers/ventas/facturas' );
 const ClientesController =  require( '../../controllers/ventas/clientes' );
 const AgentesController =  require( '../../controllers/ventas/agentes' );
 const PuntosEmisionController =  require( '../../controllers/ventas/puntos_emision' );
@@ -10,7 +11,7 @@ const MaterialesController =  require( '../../controllers/inventarios/materiales
 const candado = require( '../../middleware/auth' )
 
 const api = express.Router()
-api.post('/save', candado.verificaToken, ClientesController.save);
+api.post('/save', candado.verificaToken, FacturasController.saveFactura);
 api.post('/setsts/:id', candado.verificaToken, ClientesController.setSts);
 api.post('/setbullksts', candado.verificaToken, ClientesController.setBulkSts);
 api.post('/getall', candado.verificaToken, ClientesController.getAll);

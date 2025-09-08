@@ -111,7 +111,6 @@ export class CreateMaterialesComponent implements OnChanges, OnDestroy {
     }
 
     getImpuestos() {
-        this.impuestos = [];
         this.mater_vimpuestos?.setValue('');
         this.dbapi.getImpuestos().pipe(take(1)).subscribe({ next: (data: any) => {
                 if ( !data || data == null || data === '' ) {
@@ -122,6 +121,7 @@ export class CreateMaterialesComponent implements OnChanges, OnDestroy {
                     const item={id:data[key]['isv_nvalor'], text:data[key]['isv_vdescripcion'], obj:data[key]}
                     this.impuestos = [ ...this.impuestos, item ];
                 }
+                this.impuestos.length == 1 && this.mater_nisv?.setValue(this.impuestos[0]);
             }, error: (err) => {
                 console.log(err);
                 this.edit.emit({ type: 'error', title: 'Ha ocurrido un error', message: err })

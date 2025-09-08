@@ -49,6 +49,7 @@ export class CreateVentaLotesComponent implements OnInit, OnChanges, OnDestroy {
             venlot_ndiapago:  ['', Validators.required],
             venlot_ndiamaxpago:  ['', Validators.required],
             venlot_fcuotanivelada:  ['', Validators.required],
+            venlot_dfechaprimerpago:  ['', Validators.required],
             venlot_vobservaciones:  [''],
             venlot_nsts:  ['']
           });
@@ -73,6 +74,7 @@ export class CreateVentaLotesComponent implements OnInit, OnChanges, OnDestroy {
             this.venlot_ndiapago?.setValue(this.ventaLote?.venlot_ndiapago)
             this.venlot_ndiamaxpago?.setValue(this.ventaLote?.venlot_ndiamaxpago)
             this.venlot_fcuotanivelada?.setValue(this.ventaLote?.venlot_fcuotanivelada)
+            this.venlot_dfechaprimerpago?.setValue(this.ventaLote?.venlot_dfechaprimerpago)
             this.venlot_vobservaciones?.setValue(this.ventaLote?.venlot_vobservaciones)
             this.venlot_nsts?.setValue(this.ventaLote?.venlot_nsts)
         }
@@ -132,12 +134,15 @@ export class CreateVentaLotesComponent implements OnInit, OnChanges, OnDestroy {
                 venlot_ndiapago: this.venlot_ndiapago?.value,
                 venlot_ndiamaxpago: this.venlot_ndiamaxpago?.value,
                 venlot_fcuotanivelada: this.venlot_fcuotanivelada?.value,
+                venlot_dfechaprimerpago: this.venlot_dfechaprimerpago?.value,
                 venlot_vobservaciones: this.venlot_vobservaciones?.value,
                 venlot_nsts: 1
             }
             this.dbapi.save(_ventaLote).pipe(take(1)).subscribe({ next: (res: any) => {
                     if (res.type == 'success') {
-                        this.skNsCore.notificarUpsert('/admin/ventaLotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
+                        this.skNsCore.notificarUpsert('/proyectos/ventaLotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
+                        this.skNsCore.notificarUpsert('/proyectos/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
+                        this.getLotes();
                         this.limpiarForm();
                     }
                     this.guardando = false;
@@ -218,6 +223,7 @@ export class CreateVentaLotesComponent implements OnInit, OnChanges, OnDestroy {
     get venlot_ndiapago() { return this.createForm.get('venlot_ndiapago') };
     get venlot_ndiamaxpago() { return this.createForm.get('venlot_ndiamaxpago') };
     get venlot_fcuotanivelada() { return this.createForm.get('venlot_fcuotanivelada') };
+    get venlot_dfechaprimerpago() { return this.createForm.get('venlot_dfechaprimerpago') };
     get venlot_vobservaciones() { return this.createForm.get('venlot_vobservaciones') };
     get venlot_nsts() { return this.createForm.get('venlot_nsts') };
 

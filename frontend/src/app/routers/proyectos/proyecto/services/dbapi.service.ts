@@ -21,8 +21,8 @@ export class DbapiService{
         return this.http.post( this._prefix + '/getall', {proy_nsts : proy_nsts, sucu_nids: this.authS.getSucursalSelected()});
     }
 
-    save(_proyectos : Proyecto) {
-        const data: object = {..._proyectos,...this.authS.getUsuarioLog()};
+    save(_proyectos : Proyecto, img: any = null) {
+        const data: object = {..._proyectos,...this.authS.getUsuarioLog(), img};
         return this.http.post( this._prefix + '/save', data);
     }
 
@@ -35,10 +35,12 @@ export class DbapiService{
     }
     
     getSucursales() {
-        const body = {
-            cia_nids: this.authS.isValidCia(false)
-        }
+        const body = {cia_nids: this.authS.isValidCia(false)}
         return this.http.post( '/api/sucursales/getall', body);
+    }
+
+    getImg( proy_nid: number ) {
+        return this.http.post( this._prefix + '/getimg', {file: proy_nid, proy_nid});
     }
 
 }

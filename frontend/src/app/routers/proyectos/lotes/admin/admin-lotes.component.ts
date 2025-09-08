@@ -27,7 +27,7 @@ export class AdminLotesComponent implements OnDestroy {
     public cols: any[] = [];
     public statuses: any[] = [];
     public dataOptions: any[] = [];
-    public dataValue: any = [1];
+    public dataValue: any = [1, 2];
     public rowsPerPageOptions = [5, 10, 20];
     private $destroy: Subject<void> = new Subject();
     constructor(
@@ -44,7 +44,7 @@ export class AdminLotesComponent implements OnDestroy {
         });
         this.cols = [
             { field: 'lote_nid', header: 'ID' },
-            { field: 'proy_vnombre', header: 'Proyecto' },
+            { field: 'proy_vnombre', header: 'Residencial' },
             { field: 'unimed_vdescripcion', header: 'Unidad' },
             { field: 'lote_vnombre', header: 'Lote' },
             { field: 'lote_vcodigo', header: 'Codigo' },
@@ -56,9 +56,11 @@ export class AdminLotesComponent implements OnDestroy {
 			{ field: 'lote_vsts', header: 'Estado' },
         ];
         this.dataOptions = [
-            { name: 'ACTIVOS', value: [1] },
+            { name: 'LIBRES Y VENDIDOS', value: [1, 2] },
+            { name: 'LIBRES', value: [1] },
+            { name: 'VENDIDOS', value: [2] },
             { name: 'ELIMINADOS', value: [0] },
-            { name: 'TODOS', value: [-1, 0, 1] }
+            { name: 'TODOS', value: [-1, 0, 1, 2] }
         ];
         this.getData();
     }
@@ -69,7 +71,7 @@ export class AdminLotesComponent implements OnDestroy {
             res.forEach((val: any) => {
                 val['proy_vnombre'] = val['_tproyectos'] ? val['_tproyectos']['proy_vnombre'] : '';
                 val['unimed_vdescripcion'] = val['_tunidades_medidas'] ? val['_tunidades_medidas']['unimed_vdescripcion'] : '';
-                val['lote_vsts'] = val['lote_nsts'] == 1 ? 'ACTIVO' : 'ELIMINADO';
+                val['lote_vsts'] = (val['lote_nsts'] == 1 ? 'LIBRE' : (val['lote_nsts'] == 2 ? 'VENDIDO' : 'ELIMINADO') );
             });
             return res;
         }),

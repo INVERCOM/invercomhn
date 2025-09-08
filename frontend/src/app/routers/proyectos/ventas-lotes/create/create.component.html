@@ -59,6 +59,12 @@
                     <div class="col-12 md:col-4">
                         <input pInputText formControlName="venlot_fcuotanivelada" type="number" [readonly]="true" required [class.ng-invalid]="(venlot_fcuotanivelada?.invalid && venlot_fcuotanivelada?.touched)" [class.ng-dirty]="(venlot_fcuotanivelada?.invalid && venlot_fcuotanivelada?.touched)" [class.ng-valid]="(venlot_fcuotanivelada?.valid && (venlot_fcuotanivelada?.touched || venlot_fcuotanivelada?.dirty))" />
                     </div>
+                    <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Fecha primer pago</label>
+                    <div class="col-12 md:col-4">
+                        <input pInputText formControlName="venlot_dfechaprimerpago" type="date" [class.ng-invalid]="(venlot_dfechaprimerpago?.invalid && venlot_dfechaprimerpago?.touched)" [class.ng-dirty]="(venlot_dfechaprimerpago?.invalid && venlot_dfechaprimerpago?.touched)" [class.ng-valid]="(venlot_dfechaprimerpago?.valid && (venlot_dfechaprimerpago?.touched || venlot_dfechaprimerpago?.dirty))" />
+                    </div>
+                </div>
+                <div class="field grid">
                     <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Observaciones</label>
                     <div class="col-12 md:col-4">
                         <input pInputText formControlName="venlot_vobservaciones" type="text" [class.ng-invalid]="(venlot_vobservaciones?.invalid && venlot_vobservaciones?.touched)" [class.ng-dirty]="(venlot_vobservaciones?.invalid && venlot_vobservaciones?.touched)" [class.ng-valid]="(venlot_vobservaciones?.valid && (venlot_vobservaciones?.touched || venlot_vobservaciones?.dirty))" />

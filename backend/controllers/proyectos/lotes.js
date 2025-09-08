@@ -19,7 +19,6 @@ async function createLote( req, res ) {
             img && await FTPController.uploadFile('/lotes-'+lote['lote_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:lote, message:'Registro actualizado exitosamente'});
             logsController.saveLog(lote.lote_nid, lote.lote_nid, '_tlotes', [userLog], 2, [lote]);
-
         } else {
             const lote = Lotes.build(req.body);
             const result = await lote.save({transaction: t});

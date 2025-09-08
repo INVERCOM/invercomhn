@@ -72,5 +72,5 @@ export class DbapiService{
     
     getImg( lote_nid: number ) {
         return this.http.post( this._prefix + '/getimg', {file: lote_nid, lote_nid});
-      }
+    }
 }

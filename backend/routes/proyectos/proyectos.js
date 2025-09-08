@@ -9,5 +9,6 @@ api.post('/save', candado.verificaToken, Proyectos.createProyecto);
 api.post('/setsts/:id', candado.verificaToken, Proyectos.setSts);
 api.post('/getall', candado.verificaToken, Proyectos.getAll);
 api.post('/getallforclients', Proyectos.getAllForClients);
+api.post('/getimg', Proyectos.getImg);
 
 module.exports=api

@@ -12,6 +12,7 @@ export interface VentaLote {
     venlot_ndiamaxpago? : number;
     venlot_fcuotanivelada? : number;
     venlot_vobservaciones? : string;
+    venlot_dfechaprimerpago?: any;
     venlot_nsts?: number;
 }
 

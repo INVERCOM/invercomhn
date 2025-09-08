@@ -17,7 +17,6 @@ async function createProyecto( req, res ) {
             img && await FTPController.uploadFile('/proyectos-'+proyecto['proy_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:proyecto, message:'Registro actualizado exitosamente'});
             logsController.saveLog(proyecto.proy_nid, proyecto.proy_nid, '_tproyectos', [userLog], 2, [proyecto]);
-
         } else {
             const proyecto = Proyectos.build(req.body);
             const result = await proyecto.save({transaction: t});
@@ -94,6 +93,15 @@ async function getAllForClients( req, res ) {
     }
 }
 
+async function getImg( req, res ){
+    try {
+        const img = await FTPController.downloadFile('/proyectos-'+ req.body['proy_nid'] + '.jpg');
+        res.status(200).json(img);
+    } catch (error) {
+        res.status(500).send({type:'error', title:'create.toast.title_error' , message:'create.toast.srverror'})
+    }
+}
+
 function definirRelacionesProyectos() {
     Proyectos.belongsTo(Sucursales,{as:'_tsucursales', foreignKey: 'sucu_nid'});
     Sucursales.hasMany(Proyectos,{as:'_tproyectos', foreignKey : 'sucu_nid'});
@@ -105,5 +113,6 @@ module.exports = {
     createProyecto,
     getAll,
     getAllForClients,
-    setSts
+    setSts,
+    getImg
 }

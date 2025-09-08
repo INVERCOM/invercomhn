@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 
 // Requerimos el archivo de configuracion de la base de datos
-const db = require('../../db/conexion');
+const db = require('../../database/postgres/conexion');
 
 const _tfacturas = require('./_tfacturas');
 const _tmateriales = require('../inventarios/_tmateriales');

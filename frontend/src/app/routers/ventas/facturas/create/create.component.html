@@ -126,7 +126,7 @@
                             </td>
                             <td>
                                 <span class="p-column-title">Precio</span>
-                                {{row['facdet_fcosto']}}
+                                {{row['facdet_fcosto'] | currency:' ' :'code'}}
                             </td>
                             <td>
                                 <span class="p-column-title">Descuento</span>
@@ -138,7 +138,7 @@
                             </td>
                             <td>
                                 <span class="p-column-title">Total</span>
-                                {{row['facdet_nsubtotal']}}
+                                {{row['facdet_nsubtotal'] | currency:' ' :'code'}}
                             </td>
                         </tr>
                     </ng-template>

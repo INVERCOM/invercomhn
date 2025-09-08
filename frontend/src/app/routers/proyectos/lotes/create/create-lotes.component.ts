@@ -107,8 +107,8 @@ export class CreateLotesComponent {
             this.lote_fprecio_unidad?.setValue(this.Lote?.lote_fprecio_unidad)
 			this.lote_vgeopath?.setValue(this.Lote?.lote_vgeopath)
             this.lote_nsts?.setValue(this.Lote?.lote_nsts)
-            this.img = null;
 			this.updatePolygon();
+            this.img = null;
             this.dbapi.getImg(this.Lote?.lote_nid).pipe(take(1)).subscribe((x: any) => {
                 x && (this.img = x);
             });
@@ -323,7 +323,7 @@ export class CreateLotesComponent {
             }
             this.dbapi.save(_Lote, this.img).pipe(take(1)).subscribe({ next: (res: any) => {
                     if (res.type == 'success') {
-                        this.skNsCore.notificarUpsert('/residenciales/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
+                        this.skNsCore.notificarUpsert('/proyectos/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
                         this.limpiarForm();
                     }
                     this.edit.emit(res)

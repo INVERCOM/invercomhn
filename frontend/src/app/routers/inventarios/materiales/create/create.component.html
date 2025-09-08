@@ -53,7 +53,7 @@
                 <div class="field grid">
                     <label htmlFor="name3" class="col-12 mb-2 md:col-2 md:mb-0 text-900">Impuestos</label>
                     <div class="col-12 md:col-10">
-                        <p-dropdown [options]="impuestos" optionLabel="text" formControlName="mater_vimpuestos" [filter]="false" [virtualScroll]="impuestos.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(mater_vimpuestos?.invalid && mater_vimpuestos?.touched)" [class.ng-dirty]="(mater_vimpuestos?.invalid && mater_vimpuestos?.touched)" [class.ng-valid]="(mater_vimpuestos?.valid && (mater_vimpuestos?.touched || mater_vimpuestos?.dirty))"></p-dropdown>
+                        <p-dropdown [options]="impuestos" optionLabel="text" formControlName="mater_nisv" [filter]="false" [virtualScroll]="impuestos.length > 5" [virtualScrollItemSize]="38" [class.ng-invalid]="(mater_nisv?.invalid && mater_nisv?.touched)" [class.ng-dirty]="(mater_nisv?.invalid && mater_nisv?.touched)" [class.ng-valid]="(mater_nisv?.valid && (mater_nisv?.touched || mater_nisv?.dirty))"></p-dropdown>
                     </div>
                 </div>
                 <div class="field grid">
@@ -72,7 +72,7 @@
                 <div class="field grid">
                     <div class="col-5">
                         <span class="p-buttonset">
-                            <button [disabled]="!validarForm()" [loading]="guardando" pButton pRipple [label]="material && material.mater_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
+                            <button [disabled]="!(createForm.valid && mater_ntipomanejo?.value.id !== '' && mater_nisvincluido?.value.id !== '' && mater_nmostrarfact?.value.id !== '')" [loading]="guardando" pButton pRipple [label]="material && material.mater_nid ? 'Editar' : 'Guardar' " icon="pi pi-save" class="p-button-success mr-1 btn-sm" type="submit"></button>
                             <button pButton pRipple label="Limpiar" icon="pi pi-trash" class="p-button-danger btn-sm" type="button" (click)="limpiarForm()"></button>
                         </span>
                     </div>
