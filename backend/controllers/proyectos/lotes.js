@@ -60,7 +60,7 @@ async function getAll( req, res ) {
                 as:'_tlotes',
                 include: [{
                     model:Proyectos,
-                    where:{ sucu_nid: req.body['sucu_nids'] ? req.body['sucu_nids'] : [] },
+                    where:{ sucu_nid: req.body['sucu_nids'] ? req.body['sucu_nids'] : [], proy_nsts: [1] },
                     required: true,
                     as:'_tproyectos',
                 },{
