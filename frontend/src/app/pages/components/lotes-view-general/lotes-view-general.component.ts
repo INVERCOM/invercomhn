@@ -228,16 +228,19 @@ export class LotesViewGeneralComponent {
 					position: center,
 					map: this.googleMap.googleMap!,
 					label: {
-						text: 'Lote ' + row['lote_vnombre'],
-						color: '#000000',
-						fontSize: '14px',
-						fontWeight: 'bold'
+					  text: row['lote_vnombre'],
+					  color: '#000000',
+					  fontSize: '12px',
+					  fontWeight: 'bold',
 					},
 					icon: {
-						path: google.maps.SymbolPath.CIRCLE,
-						scale: 0
+					  url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+					  scaledSize: new google.maps.Size(30, 30),
+					  anchor: new google.maps.Point(20, 15),        // base del pin
+					  labelOrigin: new google.maps.Point(15, -5)    // posición del label sobre el icono
 					}
-				});
+				  });
+				  
 			} 
 		}
 	
