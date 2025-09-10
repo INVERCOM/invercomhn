@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { DbapiService } from 'src/app/routers/proyectos/lotes/services/dbapi.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -40,7 +40,7 @@ export class LotesViewGeneralComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'hybrid',
+			mapTypeId: 'terrain',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
@@ -87,6 +87,57 @@ export class LotesViewGeneralComponent {
 			}
 			this.residenciales.push({id:0, text:'', obj:null})
 			for (const key in data) {
+				const geoPath = JSON.parse(data[key]['proy_vgeopath']);
+        
+				if (geoPath && geoPath.length > 0 && data[key]['proy_nid'] == 3) {
+					const bounds = new google.maps.LatLngBounds();
+					geoPath.forEach((coord: { lat: number; lng: number; }) =>
+					  bounds.extend(new google.maps.LatLng(coord.lat, coord.lng))
+					);
+					
+					if (!bounds.isEmpty()) {
+					  const sw = bounds.getSouthWest();
+					  const ne = bounds.getNorthEast();
+					
+					  let south = sw.lat();
+					  let west = sw.lng();
+					  let north = ne.lat();
+					  let east = ne.lng();
+					
+					  const height = north - south;
+					  const width = east - west;
+					
+					  if (height > width) {
+						// expandir ancho
+						const diff = (height - width) / 2;
+						west -= diff;
+						east += diff;
+					  } else {
+						// expandir alto
+						const diff = (width - height) / 2;
+						south -= diff;
+						north += diff;
+					  }
+					
+					  const squareBounds: google.maps.LatLngBoundsLiteral = {
+						north,
+						south,
+						east,
+						west,
+					  };
+					
+					  const overlay = new google.maps.GroundOverlay(
+						'/assets/plano.png',
+						squareBounds,
+						{ opacity: 0.7 }
+					  );
+					  overlay.setMap(this.googleMap.googleMap!);
+					
+					  this.googleMap.googleMap!.fitBounds(squareBounds);
+					}
+					
+				}
+		
 				const item={id:data[key]['proy_nid'], text:data[key]['proy_vnombre'], obj:data[key]}
 				this.residenciales = [ ...this.residenciales, item ];
 			}}, error: (err: any) => {
@@ -171,7 +222,7 @@ export class LotesViewGeneralComponent {
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
 			fillColor: fillColor,
-			fillOpacity: 0.35,
+			fillOpacity: 0.2,
 		});
 		
 		polygon.setMap(this.googleMap.googleMap!);
