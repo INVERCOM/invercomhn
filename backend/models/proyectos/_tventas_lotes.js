@@ -71,6 +71,10 @@ const _tventas_lotes = db.define('_tventas_lotes', {
         type: 'NUMERIC(10,2)',
         comment: 'Cuota que debe de pagar el cliente por la venta',
     },
+    venlot_dfechaprimerpago: {
+        type: Sequelize.DATEONLY,
+        comment: 'Fecha del primer pago'
+    },
     venlot_vobservaciones: {
         type: Sequelize.TEXT,
         comment: 'Observaciones de la venta del lote',

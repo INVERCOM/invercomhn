@@ -73,7 +73,7 @@ export class CreateLotesComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'hybrid',
+			mapTypeId: 'terrain',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
@@ -107,8 +107,8 @@ export class CreateLotesComponent {
             this.lote_fprecio_unidad?.setValue(this.Lote?.lote_fprecio_unidad)
 			this.lote_vgeopath?.setValue(this.Lote?.lote_vgeopath)
             this.lote_nsts?.setValue(this.Lote?.lote_nsts)
-            this.img = null;
 			this.updatePolygon();
+            this.img = null;
             this.dbapi.getImg(this.Lote?.lote_nid).pipe(take(1)).subscribe((x: any) => {
                 x && (this.img = x);
             });
@@ -159,7 +159,7 @@ export class CreateLotesComponent {
     }
 
     verData(){
-        console.log('residenciales',this.residenciales);
+        //console.log('residenciales',this.residenciales);
     }
 
     setProyecto(e: any) {
@@ -170,6 +170,71 @@ export class CreateLotesComponent {
 		this.polygons = [];
 		if (e && e.id) {
 			this.data =  this.dataOriginal.filter(item => item['proy_nid'] === e.id);
+            let imgProy = '';
+            const geoPath = JSON.parse(e.obj['proy_vgeopath']);
+            this.dbapi.getImgResidencial(e.obj['proy_nid']).pipe(take(1)).subscribe((x: any) => {
+                x && (imgProy = x);
+                if (geoPath && geoPath.length > 0 && e.obj['proy_nid'] == 3) {
+                    const bounds = new google.maps.LatLngBounds();
+                    geoPath.forEach((coord: { lat: number; lng: number; }) =>
+                        bounds.extend(new google.maps.LatLng(coord.lat, coord.lng))
+                    );
+                    if (!bounds.isEmpty()) {
+                        const sw = bounds.getSouthWest();
+                        const ne = bounds.getNorthEast();
+                        let south = sw.lat();
+                        let west = sw.lng();
+                        let north = ne.lat();
+                        let east = ne.lng();
+                        const height = north - south;
+                        const width = east - west;
+            
+                        if (height > width) {
+                            const diff = (height - width) / 2;
+                            west -= diff;
+                            east += diff;
+                        } else {
+                            const diff = (width - height) / 2;
+                            south -= diff;
+                            north += diff;
+                        }
+                        const squareBounds: google.maps.LatLngBoundsLiteral = {
+                            north,
+                            south,
+                            east,
+                            west,
+                        };
+                        const imgUrl = `data:image/png;base64,${imgProy}`;
+                        const overlay = new google.maps.GroundOverlay(
+                            imgUrl,
+                            squareBounds,
+                            { opacity: 0.7 }
+                        );
+                        overlay.setMap(this.map.googleMap!);
+                        const squareCenter = new google.maps.LatLng(
+                            (north + south) / 2,
+                            (east + west) / 2
+                        );
+                        this.map.googleMap!.setCenter(squareCenter);
+                        this.map.googleMap!.fitBounds(squareBounds);
+                        const clickableArea = new google.maps.Polygon({
+                            paths: [
+                                { lat: north, lng: west },
+                                { lat: north, lng: east },
+                                { lat: south, lng: east },
+                                { lat: south, lng: west },
+                            ],
+                            strokeOpacity: 0,
+                            fillOpacity: 0,
+                            clickable: true,
+                        });
+                        clickableArea.setMap(this.map.googleMap!);
+                        clickableArea.addListener('click', (e: google.maps.MapMouseEvent) => {
+                            this.onMapClick(e);
+                        });
+                    }
+                }
+            });
 		}else{
 			this.data = [...this.dataOriginal]
 		}
@@ -206,7 +271,6 @@ export class CreateLotesComponent {
             fillColor: fillColor,
             fillOpacity: 0.35,
         });
-        
         polygon.setMap(this.map.googleMap!);
         polygon.addListener('click', (event: google.maps.MapMouseEvent) => {
             if (event.latLng) { 
@@ -323,7 +387,7 @@ export class CreateLotesComponent {
             }
             this.dbapi.save(_Lote, this.img).pipe(take(1)).subscribe({ next: (res: any) => {
                     if (res.type == 'success') {
-                        this.skNsCore.notificarUpsert('/residenciales/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
+                        this.skNsCore.notificarUpsert('/proyectos/lotes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString(), true)
                         this.limpiarForm();
                     }
                     this.edit.emit(res)

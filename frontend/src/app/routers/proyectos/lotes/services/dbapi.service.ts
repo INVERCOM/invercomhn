@@ -72,5 +72,9 @@ export class DbapiService{
     
     getImg( lote_nid: number ) {
         return this.http.post( this._prefix + '/getimg', {file: lote_nid, lote_nid});
-      }
+    }
+
+    getImgResidencial( proy_nid: number ) {
+        return this.http.post(  API_HOST + '/api/proyectos' + '/getimg', {file: proy_nid, proy_nid});
+    }
 }

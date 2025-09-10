@@ -283,8 +283,35 @@ export class CreateFacturasComponent implements OnInit, OnChanges, OnDestroy {
             const _factura: Factura = {
                 fact_nid: this.fact_nid?.value > 0 ? this.fact_nid?.value : null,
                 punemi_nid: this.punemi_nid?.value.id,
-                fact_nsts: 1
+                regfis_nid: this.regfis_nid?.value.id,
+                mone_nid: this.mone_nid?.value.id,
+                mone_nidlocal: this.mone_nid?.value.id,
+                forpag_nid: this.forpag_nid?.value.id,
+                fact_nfactorcambio: this.fact_nfactorcambio?.value,
+                fact_ncai: this.regfis_nid?.value.obj['regfis_vcai'],
+                fact_ndoc: null,
+                fact_nfactura: null,
+                fact_ndocreferencia: null,
+                fact_ntipo: this.fact_ntipo?.value,
+                fact_nvendedor: this.fact_nvendedor?.value.id,
+                fact_ncobrador: this.fact_ncobrador?.value.id,
+                fact_vdocexoneracion: '',
+                fact_nordencompra: '',
+                fact_dcredito: this.fact_dcredito?.value,
+                fact_dfecha: this.fact_dfecha?.value ? new Date(this.fact_dfecha?.value).getTime() : null,
+                fact_dfechavencimiento: this.fact_dfechavencimiento?.value ? new Date(this.fact_dfechavencimiento?.value).getTime() : null,
+                fact_dfechacreacion: null,
+                fact_vobservaciones: '',
+                fact_nisv: this.isv,
+                fact_ntotal: this.total,
+                fact_vdocreferencia: '',
+                fact_vdocreferenciados: '',
+                fact_vdocreferenciatres: '',
+                fact_nsolocrearfactura: 0,
+                fact_nsts: 1,
+                _tfacturas_detalle: [...this.data] 
             }
+            console.log(_factura);
             this.dbapi.save(_factura).pipe(take(1)).subscribe({ next: (res: any) => {
                     if(res.type == 'success'){
                         this.skNsCore.notificarUpsert('/ventas/clientes', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString())

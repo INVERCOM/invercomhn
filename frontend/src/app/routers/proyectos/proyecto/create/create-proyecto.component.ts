@@ -16,7 +16,6 @@ interface CheesyObject { id: string; text: string; obj: object}
 })
 export class CreateProyectoComponent {
     @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
-    
 	public createForm: FormGroup;
     public sucursales: CheesyObject[] = [];
     public guardando: boolean = false;
@@ -24,6 +23,8 @@ export class CreateProyectoComponent {
     public submitted: boolean = false;
 	center: google.maps.LatLngLiteral = { lat: 14.5934, lng: -87.8336 };
 	public options: google.maps.MapOptions = {}
+    public uploadedFiles: any[] = [];
+    public img: any;
     geocercaCoordinates: google.maps.LatLngLiteral[] = [];
     isDrawing: boolean = true;
     polygon: google.maps.Polygon | undefined;
@@ -75,6 +76,10 @@ export class CreateProyectoComponent {
             this.proy_vdescripcion?.setValue(this.proyecto?.proy_vdescripcion)
             this.proy_nsts?.setValue(this.proyecto?.proy_nsts)
             this.updatePolygon();
+            this.img = null;
+            this.dbapi.getImg(this.proyecto?.proy_nid).pipe(take(1)).subscribe((x: any) => {
+                x && (this.img = x);
+            });
         }
     }
 
@@ -167,7 +172,7 @@ export class CreateProyectoComponent {
                 proy_vdescripcion: this.proy_vdescripcion?.value.trim().toUpperCase(),
                 proy_nsts: 1
             }
-            this.dbapi.save(_proyecto).pipe(take(1)).subscribe({ next: (res: any) => {
+            this.dbapi.save(_proyecto, this.img).pipe(take(1)).subscribe({ next: (res: any) => {
 				if (res.type == 'success') {
 					this.skNsCore.notificarUpsert('/proyectos/sucursales', this.authS.isValidCia(false).toString(), this.authS.usuario.user_nid.toString())
 					this.limpiarForm();
@@ -201,6 +206,49 @@ export class CreateProyectoComponent {
             }
         }
         return '';
+    }
+
+    onSelect(event: any) {
+        for (const file of event.files) {
+            this.uploadedFiles.push(file);
+            const archivo: File = file;
+            this.convertirArchivoABase64(archivo)
+                .then(base64 => {
+                    this.img = base64;
+                })
+                .catch(error => {
+                    console.error('Error al convertir archivo a base64:', error);
+                });
+        }
+        console.log('onSelect', this.uploadedFiles);
+    }
+
+    onRemove(event: any) {
+        this.uploadedFiles = [];
+        this.img = null;
+    }
+
+    convertirArchivoABase64(file: File): Promise<string> {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const base64String = reader.result as string;
+            resolve(base64String.split(',')[1]); // Eliminar el prefijo "data:image/png;base64," o similar
+          };
+          reader.onerror = error => reject(error);
+          reader.readAsDataURL(file);
+        });
+    }
+
+    convertirBase64AFile(base64String: string, nombreArchivo: string): File {
+        const byteCharacters = atob(base64String);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+        return new File([blob], nombreArchivo);
     }
 
     ngOnDestroy() {

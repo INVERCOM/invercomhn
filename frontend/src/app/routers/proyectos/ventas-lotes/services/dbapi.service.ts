@@ -35,7 +35,7 @@ export class DbapiService{
     }
     
     getLotes() {
-        return this.http.post( this._prefix + '/lotes/getall', {sucu_nids: this.authS.getSucursalSelected()});
+        return this.http.post( this._prefix + '/lotes/getall', {lote_nsts: [1], sucu_nids: this.authS.getSucursalSelected()});
     }
 
     getClientes() {

@@ -18,7 +18,7 @@ async function create( req, res ) {
         await t.commit();
 
     } catch (error) {
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
         await t.rollback();
     }
@@ -43,7 +43,7 @@ async function update( req, res ) {
         await t.commit();
         
     } catch (error) {
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
         await t.rollback();
     }
@@ -54,7 +54,7 @@ async function getAll( req, res ) {
         const data = await Monedas.findAll();
         res.status(200).json(data);
     } catch (error) {
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});   
     }
 }

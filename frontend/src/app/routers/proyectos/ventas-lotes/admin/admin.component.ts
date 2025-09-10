@@ -39,9 +39,9 @@ export class AdminLotesComponent implements OnDestroy {
         private datePipe: DatePipe,
         private skNsCore: SkNsCore
     ) {
-        skNsCore.fromEvent('/proyectos/lotes').pipe(takeUntil(this.$destroy)).subscribe((x)=>{
+        skNsCore.fromEvent('/proyectos/ventaLotes').pipe(takeUntil(this.$destroy)).subscribe((x)=>{
             if (this.skNsCore.socketId != x) {
-                console.log('Event socket: unidades medidas');
+                console.log('Event socket: ventas lotes');
                 this.getData();
             }
         });
@@ -54,6 +54,7 @@ export class AdminLotesComponent implements OnDestroy {
             { field: 'venlot_fvalorfinalpipe', header: 'Valor final' },
             { field: 'venlot_fcuotaniveladapipe', header: 'Cuota mensual' },
             { field: 'venlot_dfechapipe', header: 'Fecha' },
+            { field: 'venlot_dfechaprimerpagopipe', header: 'Fecha primer pago' },
 			{ field: 'venlot_vsts', header: 'Estado' },
         ];
         this.dataOptions = [
@@ -75,13 +76,13 @@ export class AdminLotesComponent implements OnDestroy {
                 val['venlot_fvalorfinalpipe'] = this.currencyPipe.transform(val['venlot_fvalorfinal'], ' ');
                 val['venlot_fcuotaniveladapipe'] = this.currencyPipe.transform(val['venlot_fcuotanivelada'], ' ');
                 val['venlot_dfechapipe'] = this.datePipe.transform(val['venlot_dfecha'], 'dd-MM-yyyy');
+                val['venlot_dfechaprimerpagopipe'] = this.datePipe.transform(val['venlot_dfechaprimerpago'], 'dd-MM-yyyy');
                 val['venlot_vsts'] = val['venlot_nsts'] == 1 ? 'ACTIVO' : 'ELIMINADO';
             });
             return res;
         }),
         take(1)).subscribe({ next: (data: any): void => {
                 console.log(data);
-            
                 this.data = [...data];
                 this.isLoadingTable = false;
             }, error: (err) => {

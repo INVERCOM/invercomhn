@@ -28,7 +28,7 @@ async function save( req, res ) {
         await t.commit();
     } catch (error) {
         await t.rollback();
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
     }
 }
@@ -46,7 +46,7 @@ async function setSts( req, res ) {
         await t.commit();
     } catch (error) {
         await t.rollback();
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
     }
 }
@@ -87,7 +87,7 @@ async function getAll( req, res ) {
         res.status(200).json(data);
 
     } catch (error) {
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
     }
 }
@@ -128,7 +128,7 @@ async function getAllByVentaLotes( req, res ) {
         res.status(200).json(data);
 
     } catch (error) {
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
     }
 }
@@ -151,7 +151,7 @@ async function getSaldoActualVentaLote( req, res ) {
         });
         res.status(200).json(data);
     } catch (error) {
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'Error', message: error?.toString()});
     }
 }

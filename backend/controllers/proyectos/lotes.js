@@ -19,7 +19,6 @@ async function createLote( req, res ) {
             img && await FTPController.uploadFile('/lotes-'+lote['lote_nid'] + '.jpg', img);
             result && res.status(201).send({type:'success', title:'Éxito', data:lote, message:'Registro actualizado exitosamente'});
             logsController.saveLog(lote.lote_nid, lote.lote_nid, '_tlotes', [userLog], 2, [lote]);
-
         } else {
             const lote = Lotes.build(req.body);
             const result = await lote.save({transaction: t});
@@ -30,7 +29,7 @@ async function createLote( req, res ) {
         await t.commit();
     } catch (error) {
         await t.rollback();
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'create.toast.title_error' , message:'create.toast.srverror'});
     }
 }
@@ -48,7 +47,7 @@ async function setSts( req, res ) {
         await t.commit();
     } catch (error) {
         await t.rollback();
-        global._globalDebug && console.log( `Error ${error}` );
+       global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'update.toast.title_error' , message:'update.toast.srverror'});
     }
 }
@@ -61,7 +60,7 @@ async function getAll( req, res ) {
                 as:'_tlotes',
                 include: [{
                     model:Proyectos,
-                    where:{ sucu_nid: req.body['sucu_nids'] ? req.body['sucu_nids'] : [] },
+                    where:{ sucu_nid: req.body['sucu_nids'] ? req.body['sucu_nids'] : [], proy_nsts: [1] },
                     required: true,
                     as:'_tproyectos',
                 },{
@@ -72,8 +71,7 @@ async function getAll( req, res ) {
         });
         res.status(200).json(data);
     } catch (error) {
-        console.log(error);
-        global._globalDebug && console.log( `Error ${error}` );
+        global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error ', title:'update.toast.title_error' , message:'update.toast.srverror'});   
     }
 }
@@ -96,8 +94,7 @@ async function getAllFrree( req, res ) {
         });
         res.status(200).json(data);
     } catch (error) {
-        console.log(error);
-        global._globalDebug && console.log( `Error ${error}` );
+        global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error ', title:'update.toast.title_error' , message:'update.toast.srverror'});   
     }
 }
@@ -107,6 +104,7 @@ async function getImg( req, res ){
         const img = await FTPController.downloadFile('/lotes-'+ req.body['lote_nid'] + '.jpg');
         res.status(200).json(img);
     } catch (error) {
+        global._globalDebug && console.log( `Error`, error );
         res.status(500).send({type:'error', title:'create.toast.title_error' , message:'create.toast.srverror'})
     }
 }
