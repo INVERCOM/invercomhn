@@ -6,6 +6,7 @@ import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { API_HOST } from 'src/environments/environment';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-lotes-view-general',
@@ -72,6 +73,8 @@ export class LotesViewGeneralComponent {
 		this.polygons = [];
 		if (e && e.id) {
 			this.data =  this.dataOriginal.filter(item => item['proy_nid'] === e.id);
+			console.log(this.data);
+			
 		}else{
 			this.data = [...this.dataOriginal]
 		}
@@ -79,65 +82,84 @@ export class LotesViewGeneralComponent {
     }
 
 	getProyectos() {
-        this.residenciales = [];
-        this.dbapi.getProyectosAll().pipe(take(1)).subscribe({ next: (data: any) => {
-            if ( !data || data == null || data === '' ) {
-				console.log('Error consultando residenciales');
-				return;
-			}
-			this.residenciales.push({id:0, text:'', obj:null})
-			for (const key in data) {
-				let imgProy = '';
-				const geoPath = JSON.parse(data[key]['proy_vgeopath']);
-				this.dbapi.getImgResidencial(data[key]['proy_nid']).pipe(take(1)).subscribe((x: any) => {
-					x && (imgProy= x);
-					if (geoPath && geoPath.length > 0 && data[key]['proy_nid'] == 3) {
-						const bounds = new google.maps.LatLngBounds();
-						geoPath.forEach((coord: { lat: number; lng: number; }) =>
-						  	bounds.extend(new google.maps.LatLng(coord.lat, coord.lng))
-						);
-						if (!bounds.isEmpty()) {
-							const sw = bounds.getSouthWest();
-							const ne = bounds.getNorthEast();
-							let south = sw.lat();
-							let west = sw.lng();
-							let north = ne.lat();
-							let east = ne.lng();
-							const height = north - south;
-							const width = east - west;
-							if (height > width) {
-								const diff = (height - width) / 2;
-								west -= diff;
-								east += diff;
-							} else {
-								const diff = (width - height) / 2;
-								south -= diff;
-								north += diff;
+		this.residenciales = [];
+		this.dbapi.getProyectosAll().pipe(take(1)).subscribe({
+			next: (data: any) => {
+				if (!data || data === null || data === '') {
+					console.log('Error consultando residenciales');
+					return;
+				}
+				this.residenciales.push({ id: 0, text: '', obj: null });
+				const observables = Object.keys(data).map(key =>
+					this.dbapi.getImgResidencial(data[key]['proy_nid']).pipe(take(1))
+				);
+				forkJoin(observables).subscribe({
+					next: images => {
+						const globalBounds = new google.maps.LatLngBounds();
+						Object.keys(data).forEach((key, index) => {
+							const imgProy = images[index];
+							const geoPath = JSON.parse(data[key]['proy_vgeopath']);
+							if (geoPath && geoPath.length > 0) {
+								const bounds = new google.maps.LatLngBounds();
+								geoPath.forEach((coord: { lat: number; lng: number }) =>
+									bounds.extend(new google.maps.LatLng(coord.lat, coord.lng))
+								);
+								if (!bounds.isEmpty()) {
+									const sw = bounds.getSouthWest();
+									const ne = bounds.getNorthEast();
+									let south = sw.lat();
+									let west = sw.lng();
+									let north = ne.lat();
+									let east = ne.lng();
+									const height = north - south;
+									const width = east - west;
+									if (height > width) {
+										const diff = (height - width) / 2;
+										west -= diff;
+										east += diff;
+									} else {
+										const diff = (width - height) / 2;
+										south -= diff;
+										north += diff;
+									}
+									const squareBounds: google.maps.LatLngBoundsLiteral = {
+										north,
+										south,
+										east,
+										west,
+									}
+									const imgUrl = `data:image/png;base64,${imgProy}`;
+									const overlay = new google.maps.GroundOverlay(
+										imgUrl,
+										squareBounds,
+										{ opacity: 0.7 }
+									);
+									overlay.setMap(this.googleMap.googleMap!);
+									globalBounds.union(bounds);
+								}
 							}
-							const squareBounds: google.maps.LatLngBoundsLiteral = {
-								north,
-								south,
-								east,
-								west,
+							const item = {
+								id: data[key]['proy_nid'],
+								text: data[key]['proy_vnombre'],
+								obj: data[key]
 							};
-							const imgUrl = `data:image/png;base64,${imgProy}`;
-							const overlay = new google.maps.GroundOverlay(
-								imgUrl,
-								squareBounds,
-								{ opacity: 0.7 }
-							);
-							overlay.setMap(this.googleMap.googleMap!);
-							this.googleMap.googleMap!.fitBounds(squareBounds);
+							this.residenciales = [...this.residenciales, item];
+						});
+						if (!globalBounds.isEmpty()) {
+							this.googleMap.googleMap!.fitBounds(globalBounds);
 						}
+					},
+					error: (err: any) => {
+						console.log(err);
 					}
 				});
-				const item={id:data[key]['proy_nid'], text:data[key]['proy_vnombre'], obj:data[key]}
-				this.residenciales = [ ...this.residenciales, item ];
-			}}, error: (err: any) => {
-                console.log(err);
-            }
-        });
-    }
+			},
+			error: (err: any) => {
+				console.log(err);
+			}
+		});
+	}
+	
 
 	getData(){
 		this.polygons = [];
@@ -239,11 +261,9 @@ export class LotesViewGeneralComponent {
 					  anchor: new google.maps.Point(20, 15),        // base del pin
 					  labelOrigin: new google.maps.Point(15, -5)    // posición del label sobre el icono
 					}
-				  });
-				  
+				});  
 			} 
 		}
-	
 		polygon.addListener('click', (event: google.maps.MapMouseEvent) => {
 			if (event.latLng) { 
 				this.infoContent = this.sanitizer.bypassSecurityTrustHtml(tooltipText);
@@ -252,7 +272,6 @@ export class LotesViewGeneralComponent {
 				this.selectedLote = row;
 			}
 		});
-	
 		polygon.addListener('mouseout', () => {
 			this.infoWindow.close();
 			this.infoWindowPosition = undefined;
@@ -264,10 +283,9 @@ export class LotesViewGeneralComponent {
 	cerrarInfoWindow() {
 		this.infoWindow.close();
 		this.infoWindowPosition = undefined;
-	  }
+	}
 	  
-	  verDetalles() {
-		// Aquí puedes navegar o abrir modal, etc.
+	verDetalles() {
 		console.log('Detalles del lote:;');
-	  }
+	}
 }
