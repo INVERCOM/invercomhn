@@ -24,7 +24,8 @@ export class LotesViewGeneralComponent {
 	selectedLote: any = null;
 	public residenciales : any;
 	public proyecto : any;
-	dataOriginal: any[] = [];
+	dataOriginal: any[] = []; 	
+	public markers: google.maps.Marker[] = [];
     data: any[] = [];
 	infoWindowPosition: google.maps.LatLng | undefined;
 	polygons: google.maps.Polygon[] = [];
@@ -66,10 +67,15 @@ export class LotesViewGeneralComponent {
     }
 
 	setProyecto(e: any) {
-		for (let index = 0; index < this.polygons.length; index++) {
+		for (let index = 0; index < this.markers.length; index++) {
+			const element = this.markers[index];
+			element.setMap(null);
+		}
+		for (let index = 0; index < this.markers.length; index++) {
 			const element = this.polygons[index];
 			element.setMap(null);
 		}
+		this.markers = [];
 		this.polygons = [];
 		if (e && e.id) {
 			this.data =  this.dataOriginal.filter(item => item['proy_nid'] === e.id);
@@ -246,22 +252,23 @@ export class LotesViewGeneralComponent {
 			if (!bounds.isEmpty()) {
 				const center = bounds.getCenter();
 				this.googleMap.googleMap!.setCenter(center);
-				new google.maps.Marker({
+				let marker = new google.maps.Marker({
 					position: center,
 					map: this.googleMap.googleMap!,
 					label: {
-					  text: row['lote_vnombre'],
-					  color: '#000000',
-					  fontSize: '12px',
-					  fontWeight: 'bold',
+						text: row['lote_vnombre'],
+						color: '#000000',
+						fontSize: '12px',
+						fontWeight: 'bold',
 					},
 					icon: {
-					  url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-					  scaledSize: new google.maps.Size(30, 30),
-					  anchor: new google.maps.Point(20, 15),        // base del pin
-					  labelOrigin: new google.maps.Point(15, -5)    // posición del label sobre el icono
+						url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+						scaledSize: new google.maps.Size(30, 30),
+						anchor: new google.maps.Point(20, 15),     
+						labelOrigin: new google.maps.Point(15, -5)   
 					}
 				});  
+				this.markers.push(marker)
 			} 
 		}
 		polygon.addListener('click', (event: google.maps.MapMouseEvent) => {
