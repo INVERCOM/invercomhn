@@ -42,7 +42,7 @@ export class LotesViewGeneralComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'terrain',
+			mapTypeId: 'roadmap',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
@@ -113,36 +113,24 @@ export class LotesViewGeneralComponent {
 								if (!bounds.isEmpty()) {
 									const sw = bounds.getSouthWest();
 									const ne = bounds.getNorthEast();
-									let south = sw.lat();
-									let west = sw.lng();
-									let north = ne.lat();
-									let east = ne.lng();
-									const height = north - south;
-									const width = east - west;
-									if (height > width) {
-										const diff = (height - width) / 2;
-										west -= diff;
-										east += diff;
-									} else {
-										const diff = (width - height) / 2;
-										south -= diff;
-										north += diff;
-									}
+								  
 									const squareBounds: google.maps.LatLngBoundsLiteral = {
-										north,
-										south,
-										east,
-										west,
-									}
+									  north: ne.lat(),
+									  south: sw.lat(),
+									  east: ne.lng(),
+									  west: sw.lng(),
+									};
+								  
 									const imgUrl = `data:image/png;base64,${imgProy}`;
 									const overlay = new google.maps.GroundOverlay(
-										imgUrl,
-										squareBounds,
-										{ opacity: 0.7 }
+									  imgUrl,
+									  squareBounds,
+									  { opacity: 0.7 }
 									);
 									overlay.setMap(this.googleMap.googleMap!);
 									globalBounds.union(bounds);
-								}
+								  }
+								  
 							}
 							const item = {
 								id: data[key]['proy_nid'],
