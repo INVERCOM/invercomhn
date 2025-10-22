@@ -73,7 +73,7 @@ export class CreateLotesComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'terrain',
+			mapTypeId: 'roadmap',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
