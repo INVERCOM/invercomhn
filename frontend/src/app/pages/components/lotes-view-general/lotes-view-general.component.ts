@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { map, take } from 'rxjs/operators';
 import { DbapiService } from 'src/app/routers/proyectos/lotes/services/dbapi.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -6,6 +6,7 @@ import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { API_HOST } from 'src/environments/environment';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-lotes-view-general',
@@ -23,7 +24,8 @@ export class LotesViewGeneralComponent {
 	selectedLote: any = null;
 	public residenciales : any;
 	public proyecto : any;
-	dataOriginal: any[] = [];
+	dataOriginal: any[] = []; 	
+	public markers: google.maps.Marker[] = [];
     data: any[] = [];
 	infoWindowPosition: google.maps.LatLng | undefined;
 	polygons: google.maps.Polygon[] = [];
@@ -40,7 +42,7 @@ export class LotesViewGeneralComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'hybrid',
+			mapTypeId: 'roadmap',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
@@ -65,13 +67,20 @@ export class LotesViewGeneralComponent {
     }
 
 	setProyecto(e: any) {
-		for (let index = 0; index < this.polygons.length; index++) {
+		for (let index = 0; index < this.markers.length; index++) {
+			const element = this.markers[index];
+			element.setMap(null);
+		}
+		for (let index = 0; index < this.markers.length; index++) {
 			const element = this.polygons[index];
 			element.setMap(null);
 		}
+		this.markers = [];
 		this.polygons = [];
 		if (e && e.id) {
 			this.data =  this.dataOriginal.filter(item => item['proy_nid'] === e.id);
+			console.log(this.data);
+			
 		}else{
 			this.data = [...this.dataOriginal]
 		}
@@ -79,30 +88,81 @@ export class LotesViewGeneralComponent {
     }
 
 	getProyectos() {
-        this.residenciales = [];
-        this.dbapi.getProyectosAll().pipe(take(1)).subscribe({ next: (data: any) => {
-            if ( !data || data == null || data === '' ) {
-				console.log('Error consultando residenciales');
-				return;
+		this.residenciales = [];
+		this.dbapi.getProyectosAll().pipe(take(1)).subscribe({
+			next: (data: any) => {
+				if (!data || data === null || data === '') {
+					console.log('Error consultando residenciales');
+					return;
+				}
+				this.residenciales.push({ id: 0, text: '', obj: null });
+				const observables = Object.keys(data).map(key =>
+					this.dbapi.getImgResidencial(data[key]['proy_nid']).pipe(take(1))
+				);
+				forkJoin(observables).subscribe({
+					next: images => {
+						const globalBounds = new google.maps.LatLngBounds();
+						Object.keys(data).forEach((key, index) => {
+							const imgProy = images[index];
+							const geoPath = JSON.parse(data[key]['proy_vgeopath']);
+							if (geoPath && geoPath.length > 0) {
+								const bounds = new google.maps.LatLngBounds();
+								geoPath.forEach((coord: { lat: number; lng: number }) =>
+									bounds.extend(new google.maps.LatLng(coord.lat, coord.lng))
+								);
+								if (!bounds.isEmpty()) {
+									const sw = bounds.getSouthWest();
+									const ne = bounds.getNorthEast();
+								  
+									const squareBounds: google.maps.LatLngBoundsLiteral = {
+									  north: ne.lat(),
+									  south: sw.lat(),
+									  east: ne.lng(),
+									  west: sw.lng(),
+									};
+								  
+									const imgUrl = `data:image/png;base64,${imgProy}`;
+									const overlay = new google.maps.GroundOverlay(
+									  imgUrl,
+									  squareBounds,
+									  { opacity: 0.7 }
+									);
+									overlay.setMap(this.googleMap.googleMap!);
+									globalBounds.union(bounds);
+								  }
+								  
+							}
+							const item = {
+								id: data[key]['proy_nid'],
+								text: data[key]['proy_vnombre'],
+								obj: data[key]
+							};
+							this.residenciales = [...this.residenciales, item];
+						});
+						if (!globalBounds.isEmpty()) {
+							this.googleMap.googleMap!.fitBounds(globalBounds);
+						}
+					},
+					error: (err: any) => {
+						console.log(err);
+					}
+				});
+			},
+			error: (err: any) => {
+				console.log(err);
 			}
-			this.residenciales.push({id:0, text:'', obj:null})
-			for (const key in data) {
-				const item={id:data[key]['proy_nid'], text:data[key]['proy_vnombre'], obj:data[key]}
-				this.residenciales = [ ...this.residenciales, item ];
-			}}, error: (err: any) => {
-                console.log(err);
-            }
-        });
-    }
+		});
+	}
+	
 
 	getData(){
 		this.polygons = [];
 		this.dbapi.getAllFree(null).pipe(
             map((res: any[]) => {
-                res.forEach((val: any) => {
+				res.forEach((val: any) => {
                     val['proy_vnombre'] = val['_tproyectos'] ? val['_tproyectos']['proy_vnombre'] : '';
                     val['unimed_vdescripcion'] = val['_tunidades_medidas'] ? val['_tunidades_medidas']['unimed_vdescripcion'] : '';
-                    val['lote_vsts'] = val['lote_nsts'] == 1 ? 'ACTIVO' : 'ELIMINADO';
+                    val['lote_vsts'] = val['lote_nsts'] == 1 ? 'LIBRE' : 'VENDIDO';
                 });
                 this.dataOriginal = [...res];
                 this.data = [...res];
@@ -124,19 +184,15 @@ export class LotesViewGeneralComponent {
 				switch (element['lote_nsts']) {
 					case 1:
 						fillColor = '#00FF00'; // Verde
-						statusText = 'Disponible'; // Estatus: Disponible
 						break;
 					case 2:
 						fillColor = '#FF0000'; // Rojo
-						statusText = 'Apartado'; // Estatus: Apartado
 						break;
 					case 3:
 						fillColor = '#FFA500'; // Naranja
-						statusText = 'En pagos'; // Estatus: En pagos
 						break;
 					case 4:
 						fillColor = '#FFFF00'; // Amarillo
-						statusText = 'Adquirido'; // Estatus: Adquirido
 						break;
 					default:
 						fillColor = '#808080'; // Gris (para valores no especificados)
@@ -171,11 +227,9 @@ export class LotesViewGeneralComponent {
 			strokeOpacity: 0.8,
 			strokeWeight: 2,
 			fillColor: fillColor,
-			fillOpacity: 0.35,
+			fillOpacity: 0.2,
 		});
-		
 		polygon.setMap(this.googleMap.googleMap!);
-		
 		if (esUltimo) {
 			const bounds = new google.maps.LatLngBounds();
 			geoPath.forEach(coord => {
@@ -186,11 +240,25 @@ export class LotesViewGeneralComponent {
 			if (!bounds.isEmpty()) {
 				const center = bounds.getCenter();
 				this.googleMap.googleMap!.setCenter(center);
-			} else {
-			  	console.warn('No se pudo calcular bounds, todos los puntos son (0,0)?');
-			}
+				let marker = new google.maps.Marker({
+					position: center,
+					map: this.googleMap.googleMap!,
+					label: {
+						text: row['lote_vnombre'],
+						color: '#000000',
+						fontSize: '12px',
+						fontWeight: 'bold',
+					},
+					icon: {
+						url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+						scaledSize: new google.maps.Size(30, 30),
+						anchor: new google.maps.Point(20, 15),     
+						labelOrigin: new google.maps.Point(15, -5)   
+					}
+				});  
+				this.markers.push(marker)
+			} 
 		}
-
 		polygon.addListener('click', (event: google.maps.MapMouseEvent) => {
 			if (event.latLng) { 
 				this.infoContent = this.sanitizer.bypassSecurityTrustHtml(tooltipText);
@@ -199,21 +267,20 @@ export class LotesViewGeneralComponent {
 				this.selectedLote = row;
 			}
 		});
-	
 		polygon.addListener('mouseout', () => {
 			this.infoWindow.close();
 			this.infoWindowPosition = undefined;
 		});
 		this.polygons.push(polygon); 
 	}
+	
 
 	cerrarInfoWindow() {
 		this.infoWindow.close();
 		this.infoWindowPosition = undefined;
-	  }
+	}
 	  
-	  verDetalles() {
-		// Aquí puedes navegar o abrir modal, etc.
+	verDetalles() {
 		console.log('Detalles del lote:;');
-	  }
+	}
 }

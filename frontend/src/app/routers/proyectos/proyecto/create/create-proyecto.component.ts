@@ -56,7 +56,7 @@ export class CreateProyectoComponent {
 			zoomControl: true,
 			scrollwheel: true,
 			disableDoubleClickZoom: false,
-			mapTypeId: 'terrain',
+			mapTypeId: 'roadmap',
 			maxZoom: 20,
 			minZoom: 4,
 			tilt : 45,
@@ -76,7 +76,7 @@ export class CreateProyectoComponent {
             this.proy_vdescripcion?.setValue(this.proyecto?.proy_vdescripcion)
             this.proy_nsts?.setValue(this.proyecto?.proy_nsts)
             this.updatePolygon();
-             this.img = null;
+            this.img = null;
             this.dbapi.getImg(this.proyecto?.proy_nid).pipe(take(1)).subscribe((x: any) => {
                 x && (this.img = x);
             });

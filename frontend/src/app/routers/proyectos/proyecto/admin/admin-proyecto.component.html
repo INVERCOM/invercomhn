@@ -60,11 +60,11 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="createDialog" [style]="{width: '950px'}" header="Crear proyecto" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="createDialog" [style]="{width: '950px'}" header="Crear residencial" [modal]="true" class="p-fluid">
             <app-create-proyecto (edit)="editEvent($event);"></app-create-proyecto>
         </p-dialog>
 
-        <p-dialog [(visible)]="editDialog" [style]="{width: '950px'}" header="Editar proyecto" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="editDialog" [style]="{width: '950px'}" header="Editar residencial" [modal]="true" class="p-fluid">
             <app-create-proyecto [proyecto]="item" (edit)="editEvent($event);"></app-create-proyecto>
         </p-dialog>
 
