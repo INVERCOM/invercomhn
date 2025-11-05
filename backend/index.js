@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./database/mongodb/database');
 const app = require('./app');
 const port = process.env.PORT ? process.env.PORT : (process.env.SERVERPORT ? process.env.SERVERPORT : 4004)
 const http  =   require('http');
@@ -40,5 +41,3 @@ if(initEjecucion == 'init' || tipoEjecucion  == 'init'){
 //         console.log(`server running at https://%s:%s `,host,port,'Online PROD');
 //     });
 // }
-
-require('./database/mongodb/database');
