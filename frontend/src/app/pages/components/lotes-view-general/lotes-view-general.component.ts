@@ -79,8 +79,6 @@ export class LotesViewGeneralComponent {
 		this.polygons = [];
 		if (e && e.id) {
 			this.data =  this.dataOriginal.filter(item => item['proy_nid'] === e.id);
-			console.log(this.data);
-			
 		}else{
 			this.data = [...this.dataOriginal]
 		}

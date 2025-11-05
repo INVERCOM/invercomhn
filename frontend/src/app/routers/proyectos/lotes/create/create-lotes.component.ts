@@ -174,7 +174,7 @@ export class CreateLotesComponent {
             const geoPath = JSON.parse(e.obj['proy_vgeopath']);
             this.dbapi.getImgResidencial(e.obj['proy_nid']).pipe(take(1)).subscribe((x: any) => {
                 x && (imgProy = x);
-                if (geoPath && geoPath.length > 0 && e.obj['proy_nid'] == 3) {
+                if (geoPath && geoPath.length > 0) {
                     const bounds = new google.maps.LatLngBounds();
                     geoPath.forEach((coord: { lat: number; lng: number; }) =>
                         bounds.extend(new google.maps.LatLng(coord.lat, coord.lng))
